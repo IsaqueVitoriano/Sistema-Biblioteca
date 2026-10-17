@@ -1,0 +1,10 @@
+# Ambientes virtuais
+.venv/
+
+# Cache e arquivos compilados do Python
+__pycache__/
+*.py[cod]
+
+# Configurações locais do IntelliJ/PyCharm
+.idea/
+*.iml
