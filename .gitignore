@@ -8,3 +8,5 @@ __pycache__/
 # Configurações locais do IntelliJ/PyCharm
 .idea/
 *.iml
+
+sistema-biblioteca.erdplus
