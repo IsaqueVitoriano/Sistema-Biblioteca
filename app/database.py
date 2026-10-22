@@ -1,18 +1,38 @@
 import os
-from sqlmodel import SQLModel, create_engine, Session
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./bibliotecas.db")
-connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "sqlite:///./Biblioteca.db"
+)
+
+connect_args = (
+    {"check_same_thread": False}
+    if DATABASE_URL.startswith("sqlite")
+    else {}
+)
 
 engine = create_engine(
     DATABASE_URL,
     echo=True,
-    connect_args=connect_args,
+    connect_args=connect_args
 )
 
+SessionLocal = sessionmaker(
+    bind=engine,
+    autocommit=False,
+    autoflush=False
+)
+
+Base = declarative_base()
+
 def create_tables():
-    SQLModel.metadata.create_all(engine)
+    Base.metadata.create_all(bind=engine)
 
 def get_session():
-    with Session(engine) as session:
-        yield session
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
