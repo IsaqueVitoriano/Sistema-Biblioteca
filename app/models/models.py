@@ -23,22 +23,18 @@ class Emprestimo(Base):
     id: Mapped[str] = mapped_column(primary_key=True, comment='Id da emprestimo')
 
     situacao_emprestimo: Mapped[SituacaoEmprestimo] = mapped_column(
-        gt=SituacaoEmprestimo.DISPONIVEL,
         comment= 'status do emprestimo'
     )
 
     data_emprestimo: Mapped[datetime] = mapped_column(
-        gt=datetime.now(),
         comment='Data da emprestimo'
     )
 
     data_devolucao_efetiva: Mapped[datetime] | Mapped[None] = mapped_column(
-        gt=None,
         comment='Data efetiva do emprestimo'
     )
 
     data_prazo_devolucao_efetiva: Mapped[datetime] | Mapped[None] = mapped_column(
-        gt=None,
         comment='Data prazo do emprestimo'
     )
 
@@ -68,7 +64,7 @@ class Usuario(Base):
 
     nome: Mapped[str] = mapped_column(String(100), nullable=False, comment='Nome do usuario')
 
-    data_criacao: Mapped[datetime] = mapped_column(gt=datetime.now(), comment="data de criacao do usuario")
+    data_criacao: Mapped[datetime] = mapped_column(comment="data de criacao do usuario")
 
     email: Mapped[str] = mapped_column(String(150), unique=True, nullable=False, comment='Email do usuario')
 
