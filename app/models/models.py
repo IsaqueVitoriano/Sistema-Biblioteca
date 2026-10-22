@@ -1,89 +1,113 @@
 from datetime import datetime, date
-from enum import Enum
 
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
+from sqlalchemy import String, Enum, ForeignKey
 
-from pydantic import BaseModel, Field
 
-class SituacaoEmprestimo(Enum, str):
+class Base(DeclarativeBase):
+    pass
+
+class SituacaoEmprestimo(str, Enum):
         DANIFICADO = 'DANIFICADO'
         DISPONIVEL = 'DISPONIVEL'
         EM_EMPRESTIMO = 'EM_EMPRESTIMO'
 
-class TipoUsuario(Enum, str):
+class TipoUsuario(str, Enum):
     BIBLIOTECARIO='BIBLIOTECARIO'
     ALUNO='ALUNO'
     ADMINISTRADOR='ADMINISTRADOR'
 
-class Emprestimo(BaseModel):
-    id: Mapped[str] = mapped_column(primary_key=True, description='Id da emprestimo')
+class Emprestimo(Base):
+    __tablename__ = 'emprestimo'
+
+    id: Mapped[str] = mapped_column(primary_key=True, comment='Id da emprestimo')
 
     situacao_emprestimo: Mapped[SituacaoEmprestimo] = mapped_column(
         gt=SituacaoEmprestimo.DISPONIVEL,
-        description= 'status do emprestimo'
+        comment= 'status do emprestimo'
     )
 
     data_emprestimo: Mapped[datetime] = mapped_column(
         gt=datetime.now(),
-        description='Data da emprestimo'
+        comment='Data da emprestimo'
     )
 
     data_devolucao_efetiva: Mapped[datetime] | Mapped[None] = mapped_column(
         gt=None,
-        description='Data efetiva do emprestimo'
+        comment='Data efetiva do emprestimo'
     )
 
     data_prazo_devolucao_efetiva: Mapped[datetime] | Mapped[None] = mapped_column(
         gt=None,
-        description='Data prazo do emprestimo'
+        comment='Data prazo do emprestimo'
     )
 
     id_usuario: Mapped[str] = mapped_column(
-        description='Id do usuario do emprestimo'
+        ForeignKey("usuario.id"),
+        comment='Id do usuario do emprestimo'
     )
 
     id_exemplar: Mapped[str] = mapped_column(
-        description='Id do exemplar do emprestimo'
+        ForeignKey("exemplar.id"),
+        comment='Id do exemplar do emprestimo'
     )
 
-class Usuario(BaseModel):
-    id: Mapped[str] = mapped_column(description='Id do usuario')
+class Exemplar(Base):
+    __tablename__ = 'exemplar'
 
-    nome: Mapped[str] = mapped_column(String(100), nullable=False, description='Nome do usuario')
+    id: Mapped[str] = mapped_column(primary_key=True, comment='Id da exemplar')
 
-    data_criacao: Mapped[datetime] = mapped_column(gt=datetime.now(), description="data de criacao do usuario")
+    situacao: Mapped[str] = mapped_column(comment='Situacao do exemplar')
 
-    email: Mapped[str] = mapped_column(String(150), unique=True, nullable=False, description='Email do usuario')
+    id_livro: Mapped[str] = mapped_column(ForeignKey("livro.id"), comment='Id do livro')
 
-    matricula: Mapped[str] = mapped_column(nullable=False, description='Matricula do usuario')
+class Usuario(Base):
+    __tablename__ = 'usuario'
 
-    tipo_usuario: Mapped[TipoUsuario] | Mapped[None] = mapped_column(description='Tipo do usuario')
+    id: Mapped[str] = mapped_column(primary_key=True, comment='Id do usuario')
 
-class Editora(BaseModel):
-    id: Mapped[str] = mapped_column(description='Id do editora')
+    nome: Mapped[str] = mapped_column(String(100), nullable=False, comment='Nome do usuario')
 
-    nome: Mapped[str] = mapped_column(String(100), description='Nome do editora')
+    data_criacao: Mapped[datetime] = mapped_column(gt=datetime.now(), comment="data de criacao do usuario")
 
-class Autor(BaseModel):
-    id: Mapped[str] = mapped_column(description='Id do autor')
+    email: Mapped[str] = mapped_column(String(150), unique=True, nullable=False, comment='Email do usuario')
 
-    nome: Mapped[str] = mapped_column(String(100), description='Nome do autor')
+    matricula: Mapped[str] = mapped_column(unique=True, nullable=False, comment='Matricula do usuario')
 
-class Categoria(BaseModel):
-    id: Mapped[str] = mapped_column(description='Id do categoria')
+    tipo_usuario: Mapped[TipoUsuario] | Mapped[None] = mapped_column(comment='Tipo do usuario')
 
-    nome: Mapped[str] = mapped_column(String(50), description='Nome do categoria')
+class Editora(Base):
+    __tablename__ = 'editora'
 
-class Livro(BaseModel):
-    id: Mapped[str] = mapped_column(description='Id do livro')
+    id: Mapped[str] = mapped_column(primary_key=True, comment='Id do editora')
 
-    titulo: Mapped[str] = mapped_column(String(60), description='Titulo do livro')
+    nome: Mapped[str] = mapped_column(String(100), comment='Nome do editora')
 
-    ano_publicacao: Mapped[date] = mapped_column(description='Ano de publicacao do livro')
+class Autor(Base):
+    __tablename__ = 'autor'
 
-    id_editora: Mapped[str] = mapped_column(description='Id do editora do livro')
+    id: Mapped[str] = mapped_column(primary_key=True, comment='Id do autor')
 
-    id_categoria: Mapped[str] = mapped_column(description='Id do editora do livro')
+    nome: Mapped[str] = mapped_column(String(100), comment='Nome do autor')
 
-    autores: Mapped[list] = mapped_column(description='Autores do livro')
+class Categoria(Base):
+    __tablename__ = 'categoria'
+
+    id: Mapped[str] = mapped_column(primary_key=True ,comment='Id do categoria')
+
+    nome: Mapped[str] = mapped_column(String(50), comment='Nome do categoria')
+
+class Livro(Base):
+    __tablename__ = 'livro'
+
+    id: Mapped[str] = mapped_column(primary_key=True, comment='Id do livro')
+
+    titulo: Mapped[str] = mapped_column(String(60), comment='Titulo do livro')
+
+    ano_publicacao: Mapped[date] = mapped_column(comment='Ano de publicacao do livro')
+
+    id_editora: Mapped[str] = mapped_column(ForeignKey("editora.id"), comment='Id do editora do livro')
+
+    id_categoria: Mapped[str] = mapped_column(ForeignKey("categoria.id"), comment='Id do editora do livro')
+
+    autores: Mapped[list] = mapped_column(comment='Autores do livro')
