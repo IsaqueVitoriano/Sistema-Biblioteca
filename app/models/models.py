@@ -1,11 +1,19 @@
 from datetime import datetime, date
 
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
-from sqlalchemy import String, Enum, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
+from sqlalchemy import String, Enum, ForeignKey, Table, Column
 
 
 class Base(DeclarativeBase):
     pass
+
+livro_autor = Table(
+    "livro_autor",
+    Base.metadata,
+    Column("livro_id", ForeignKey("livro.id"), primary_key=True),
+    Column("autor_id", ForeignKey("autor.id"), primary_key=True),
+)
+
 
 class SituacaoEmprestimo(str, Enum):
         DANIFICADO = 'DANIFICADO'
@@ -86,6 +94,8 @@ class Autor(Base):
 
     nome: Mapped[str] = mapped_column(String(100), comment='Nome do autor')
 
+    livros: Mapped[list["Livro"]] = relationship(secondary=livro_autor, back_populates="autores")
+
 class Categoria(Base):
     __tablename__ = 'categoria'
 
@@ -106,4 +116,5 @@ class Livro(Base):
 
     id_categoria: Mapped[str] = mapped_column(ForeignKey("categoria.id"), comment='Id do editora do livro')
 
-    autores: Mapped[list] = mapped_column(comment='Autores do livro')
+    autores: Mapped[list["Autor"]] = relationship(secondary=livro_autor, back_populates="livros")
+
