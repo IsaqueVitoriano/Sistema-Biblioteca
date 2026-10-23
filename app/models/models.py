@@ -19,15 +19,20 @@ livro_autor = Table(
 
 
 class SituacaoEmprestimo(str, PythonEnum):
-    DANIFICADO = "DANIFICADO"
-    DISPONIVEL = "DISPONIVEL"
+    DEVOLVIDO = "DEVOLVIDO"
     EM_EMPRESTIMO = "EM_EMPRESTIMO"
-
+    RETIRADO_DE_CIRCULACAO = "RETIRADO_DE_CIRCULACAO"
 
 class TipoUsuario(str, PythonEnum):
-    BIBLIOTECARIO = "BIBLIOTECARIO"
+    SERVIDOR = "SERVIDOR"
+    PROFESSOR = "PROFESSOR"
     ALUNO = "ALUNO"
     ADMINISTRADOR = "ADMINISTRADOR"
+
+class SituacaoExemplar(str, PythonEnum):
+    DISPONIVEL = "DISPONIVEL"
+    DANIFICADO = "DANIFICADO"
+    EM_EMPRESTIMO = "EM_EMPRESTIMO"
 
 
 class Emprestimo(Base):
@@ -37,6 +42,7 @@ class Emprestimo(Base):
 
     situacao_emprestimo: Mapped[SituacaoEmprestimo] = mapped_column(
         SQLAlchemyEnum(SituacaoEmprestimo, native_enum=False),
+        default= SituacaoEmprestimo.EM_EMPRESTIMO,
         comment= 'status do emprestimo'
     )
 
@@ -69,7 +75,10 @@ class Exemplar(Base):
 
     id: Mapped[str] = mapped_column(primary_key=True, default=lambda: str(uuid4()), comment='Id da exemplar')
 
-    situacao: Mapped[str] = mapped_column(comment='Situacao do exemplar')
+    situacao: Mapped[str] = mapped_column(
+        SQLAlchemyEnum(SituacaoExemplar, native_enum=False),
+        default= SituacaoExemplar.EM_EMPRESTIMO,
+        comment='Situacao do exemplar')
 
     id_livro: Mapped[str] = mapped_column(ForeignKey("livro.id"), comment='Id do livro')
 
@@ -131,7 +140,11 @@ class Livro(Base):
 
     autores: Mapped[list["Autor"]] = relationship(secondary=livro_autor, back_populates="livros")
 
+
+
+
 #  ------------- DTO's ------------
+
 
 class AutorEntrada(SchemaBase):
     nome: str = Field(max_length=100)
