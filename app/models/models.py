@@ -20,8 +20,10 @@ livro_autor = Table(
 
 class SituacaoEmprestimo(str, PythonEnum):
     DEVOLVIDO = "DEVOLVIDO"
+    PENDENTE = "PENDENTE"
+    ATRASADO = "ATRASADO"
     EM_EMPRESTIMO = "EM_EMPRESTIMO"
-    RETIRADO_DE_CIRCULACAO = "RETIRADO_DE_CIRCULACAO"
+
 
 class TipoUsuario(str, PythonEnum):
     SERVIDOR = "SERVIDOR"
@@ -33,6 +35,7 @@ class SituacaoExemplar(str, PythonEnum):
     DISPONIVEL = "DISPONIVEL"
     DANIFICADO = "DANIFICADO"
     EM_EMPRESTIMO = "EM_EMPRESTIMO"
+    RETIRADO_DE_CIRCULACAO = "RETIRADO_DE_CIRCULACAO"
 
 
 class Emprestimo(Base):
