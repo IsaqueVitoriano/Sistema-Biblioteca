@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
 from app.utils.util import commit_or_conflict, get_or_404
@@ -8,6 +8,7 @@ from app.models.models import (
     Exemplar,
     Usuario,
 )
+
 
 def validar_fks(session: Session, dados: EmprestimoEntrada) -> None:
     get_or_404(session, Usuario, dados.id_usuario)
@@ -25,8 +26,25 @@ def criar_emprestimo(dados: EmprestimoEntrada, session: Session):
     return emprestimo
 
 
-def listar_emprestimos(session: Session):
-    return session.scalars(select(Emprestimo)).all()
+def listar_emprestimos(session: Session, page: int = 1, page_size: int = 10):
+    registros_total = session.scalar(select(func.count()).select_from(Emprestimo)) or 0
+    paginas_total = (registros_total + page_size - 1) // page_size
+
+    deslocamento = (page - 1) * page_size
+
+    consulta = select(Emprestimo).offset(deslocamento).limit(page_size)
+
+    resultados = session.scalars(consulta).all()
+
+    return {
+        "dados": resultados,
+        "paginacao": {
+            "registros_total": registros_total,
+            "paginas_total": paginas_total,
+            "pagina_atual": page,
+            "pagina_tamanho": page_size,
+        },
+    }
 
 
 def obter_emprestimo(emprestimo_id: str, session: Session):
@@ -54,4 +72,4 @@ def apagar_emprestimo(emprestimo_id: str, session: Session):
 
     session.delete(emprestimo)
     commit_or_conflict(session)
-    return {"mensagem": "Emprestimo apagado com sucesso" }
+    return {"mensagem": "Emprestimo apagado com sucesso"}
