@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session, selectinload
 
 from app.utils.util import commit_or_conflict, get_or_404
@@ -11,8 +11,7 @@ def criar_livro(dados: LivroEntrada, session: Session):
 
     if dados.id_autores:
         autores = session.scalars(
-            select(Autor).
-            where(Autor.id.in_(dados.id_autores))
+            select(Autor).where(Autor.id.in_(dados.id_autores))
         ).all()
     else:
         autores = []
@@ -20,8 +19,11 @@ def criar_livro(dados: LivroEntrada, session: Session):
     id_autores_encontrados = {autor.id for autor in autores}
 
     id_autor_inexistente = next(
-        (autor_id for autor_id in dados.id_autores
-         if autor_id not in id_autores_encontrados),
+        (
+            autor_id
+            for autor_id in dados.id_autores
+            if autor_id not in id_autores_encontrados
+        ),
         None,
     )
 
@@ -42,15 +44,35 @@ def criar_livro(dados: LivroEntrada, session: Session):
     return livro
 
 
-def listar_livros(session: Session):
-    return session.scalars(select(Livro).options(selectinload(Livro.autores))).all()
+def listar_livros(session: Session, page: int = 1, page_size: int = 10):
+    registros_total = session.scalar(select(func.count()).select_from(Livro)) or 0
+    paginas_total = (registros_total + page_size - 1) // page_size
+
+    deslocamento = (page - 1) * page_size
+
+    consulta = (
+        select(Livro)
+        .options(selectinload(Livro.autores))
+        .offset(deslocamento)
+        .limit(page_size)
+    )
+
+    resultados = session.scalars(consulta).all()
+
+    return {
+        "dados": resultados,
+        "paginacao": {
+            "registros_total": registros_total,
+            "paginas_total": paginas_total,
+            "pagina_atual": page,
+            "pagina_tamanho": page_size,
+        },
+    }
 
 
 def obter_livro(livro_id: str, session: Session):
     return session.scalar(
-        select(Livro)
-        .where(Livro.id == livro_id)
-        .options(selectinload(Livro.autores))
+        select(Livro).where(Livro.id == livro_id).options(selectinload(Livro.autores))
     ) or get_or_404(session, Livro, livro_id)
 
 
@@ -70,7 +92,11 @@ def atualizar_livro(livro_id: str, dados: LivroEntrada, session: Session):
     autores_encontrados = {autor.id for autor in autores}
 
     autor_inexistente = next(
-        (autor_id for autor_id in dados.id_autores if autor_id not in autores_encontrados),
+        (
+            autor_id
+            for autor_id in dados.id_autores
+            if autor_id not in autores_encontrados
+        ),
         None,
     )
 
