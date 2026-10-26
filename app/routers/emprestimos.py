@@ -12,9 +12,21 @@ router = APIRouter(prefix="/emprestimos", tags=["Empréstimos"])
 def listar(
     page: int = Query(1, ge=1, description="Número da página"),
     page_size: int = Query(10, ge=1, le=100, description="Tamanho da página"),
+    id_usuario: str | None = Query(None, description="ID do leitor"),
+    id_exemplar: str | None = Query(None, description="ID do exemplar"),
+    situacao_emprestimo: SituacaoEmprestimo | None = Query(
+        None, description="Status do empréstimo"
+    ),
     session: Session = Depends(get_session),
 ):
-    return listar_emprestimos(session=session, page=page, page_size=page_size)
+    return listar_emprestimos(
+        session=session,
+        page=page,
+        page_size=page_size,
+        id_usuario=id_usuario,
+        id_exemplar=id_exemplar,
+        situacao_emprestimo=situacao_emprestimo,
+    )
 
 #
 # @router.get("/", response_model=list[EmprestimoSaida])
