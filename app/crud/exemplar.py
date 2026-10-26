@@ -5,7 +5,7 @@ from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Exemplar, ExemplarEntrada, Livro
 
 
-def criar_exemplar(dados: ExemplarEntrada, session: Session):
+def criar_exemplares(dados: ExemplarEntrada, session: Session):
     get_or_404(session, Livro, dados.id_livro)
 
     exemplar = Exemplar(**dados.model_dump())

@@ -5,7 +5,7 @@ from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Editora, EditoraEntrada
 
 
-def criar_editora(dados: EditoraEntrada, session: Session):
+def criar_editoras(dados: EditoraEntrada, session: Session):
     editora = Editora(nome=dados.nome)
     session.add(editora)
 
