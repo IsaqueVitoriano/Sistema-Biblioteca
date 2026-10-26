@@ -1,4 +1,4 @@
-from sqlalchemy import select, func
+from sqlalchemy import select, func, extract
 from sqlalchemy.orm import Session, selectinload
 
 from app.utils.util import commit_or_conflict, get_or_404
@@ -44,18 +44,40 @@ def criar_livro(dados: LivroEntrada, session: Session):
     return livro
 
 
-def listar_livros(session: Session, page: int = 1, page_size: int = 10):
-    registros_total = session.scalar(select(func.count()).select_from(Livro)) or 0
+def listar_livros(
+    session: Session,
+    page: int = 1,
+    page_size: int = 10,
+    titulo: str | None = None,
+    id_categoria: str | None = None,
+    id_editora: str | None = None,
+    ano_publicacao: int | None = None,
+):
+    condicoes = []
+    if titulo:
+        condicoes.append(Livro.titulo.ilike(f"%{titulo}%"))
+    if id_categoria:
+        condicoes.append(Livro.id_categoria == id_categoria)
+    if id_editora:
+        condicoes.append(Livro.id_editora == id_editora)
+    if ano_publicacao:
+        condicoes.append(extract("year", Livro.ano_publicacao) == ano_publicacao)
+
+    consulta_contador = select(func.count()).select_from(Livro)
+    if condicoes:
+        consulta_contador = consulta_contador.where(*condicoes)
+
+    registros_total = session.scalar(consulta_contador) or 0
     paginas_total = (registros_total + page_size - 1) // page_size
 
     deslocamento = (page - 1) * page_size
 
-    consulta = (
-        select(Livro)
-        .options(selectinload(Livro.autores))
-        .offset(deslocamento)
-        .limit(page_size)
-    )
+    consulta = select(Livro).options(selectinload(Livro.autores))
+
+    if condicoes:
+        consulta = consulta.where(*condicoes)
+
+    consulta = consulta.offset(deslocamento).limit(page_size)
 
     resultados = session.scalars(consulta).all()
 
