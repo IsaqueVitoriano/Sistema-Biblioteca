@@ -7,6 +7,7 @@ from app.models.models import (
     EmprestimoEntrada,
     Exemplar,
     Usuario,
+    SituacaoEmprestimo,
 )
 
 
@@ -26,13 +27,36 @@ def criar_emprestimos(dados: EmprestimoEntrada, session: Session):
     return emprestimo
 
 
-def listar_emprestimos(session: Session, page: int = 1, page_size: int = 10):
-    registros_total = session.scalar(select(func.count()).select_from(Emprestimo)) or 0
+def listar_emprestimos(
+    session: Session,
+    page: int = 1,
+    page_size: int = 10,
+    id_usuario: str | None = None,
+    id_exemplar: str | None = None,
+    situacao_emprestimo: SituacaoEmprestimo | None = None,
+):
+    condicoes = []
+    if id_usuario:
+        condicoes.append(Emprestimo.id_usuario == id_usuario)
+    if id_exemplar:
+        condicoes.append(Emprestimo.id_exemplar == id_exemplar)
+    if situacao_emprestimo:
+        condicoes.append(Emprestimo.situacao_emprestimo == situacao_emprestimo)
+
+    consulta_contador = select(func.count()).select_from(Emprestimo)
+    if condicoes:
+        consulta_contador = consulta_contador.where(*condicoes)
+
+    registros_total = session.scalar(consulta_contador) or 0
     paginas_total = (registros_total + page_size - 1) // page_size
 
     deslocamento = (page - 1) * page_size
 
-    consulta = select(Emprestimo).offset(deslocamento).limit(page_size)
+    consulta = select(Emprestimo)
+    if condicoes:
+        consulta = consulta.where(*condicoes)
+
+    consulta = consulta.offset(deslocamento).limit(page_size)
 
     resultados = session.scalars(consulta).all()
 
