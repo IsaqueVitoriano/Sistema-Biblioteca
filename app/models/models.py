@@ -4,7 +4,6 @@ from uuid import uuid4
 
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 from sqlalchemy import String, Enum as SQLAlchemyEnum, ForeignKey, Table, Column
-from pydantic import BaseModel as SchemaBase, ConfigDict, Field
 
 
 class Base(DeclarativeBase):
@@ -48,7 +47,7 @@ class Emprestimo(Base):
 
     situacao_emprestimo: Mapped[SituacaoEmprestimo] = mapped_column(
         SQLAlchemyEnum(SituacaoEmprestimo, native_enum=False),
-        default=SituacaoEmprestimo.EM_EMPRESTIMO,
+        default=SituacaoEmprestimo.PENDENTE,
         comment="status do emprestimo",
     )
 
@@ -80,9 +79,9 @@ class Exemplar(Base):
         primary_key=True, default=lambda: str(uuid4()), comment="Id da exemplar"
     )
 
-    situacao: Mapped[str] = mapped_column(
+    situacao: Mapped[SituacaoExemplar] = mapped_column(
         SQLAlchemyEnum(SituacaoExemplar, native_enum=False),
-        default=SituacaoExemplar.EM_EMPRESTIMO,
+        default=SituacaoExemplar.DISPONIVEL,
         comment="Situacao do exemplar",
     )
 
@@ -174,109 +173,3 @@ class Livro(Base):
     autores: Mapped[list["Autor"]] = relationship(
         secondary=livro_autor, back_populates="livros"
     )
-
-
-#  ------------- DTO's ------------
-
-
-class AutorEntrada(SchemaBase):
-    nome: str = Field(max_length=100)
-
-
-class AutorSaida(SchemaBase):
-    model_config = ConfigDict(from_attributes=True)
-    id: str
-    nome: str
-
-
-class ExemplarEntrada(SchemaBase):
-    situacao: str
-    id_livro: str
-
-
-class ExemplarSaida(SchemaBase):
-    model_config = ConfigDict(from_attributes=True)
-    id: str
-    situacao: str
-    id_livro: str
-
-
-class EmprestimoEntrada(SchemaBase):
-    situacao_emprestimo: SituacaoEmprestimo
-    data_emprestimo: datetime
-    data_devolucao_efetiva: datetime | None = None
-    data_prazo_devolucao_efetiva: datetime | None = None
-    id_usuario: str
-    id_exemplar: str
-
-
-class EmprestimoSaida(SchemaBase):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: str
-    situacao_emprestimo: SituacaoEmprestimo
-    data_emprestimo: datetime
-    data_devolucao_efetiva: datetime | None
-    data_prazo_devolucao_efetiva: datetime | None
-    id_usuario: str
-    id_exemplar: str
-
-
-class UsuarioEntrada(SchemaBase):
-    nome: str = Field(max_length=100)
-    data_criacao: datetime
-    email: str = Field(max_length=150)
-    matricula: str
-    tipo_usuario: TipoUsuario | None = None
-
-
-class UsuarioSaida(SchemaBase):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: str
-    nome: str
-    data_criacao: datetime
-    email: str
-    matricula: str
-    tipo_usuario: TipoUsuario | None
-
-
-class EditoraEntrada(SchemaBase):
-    nome: str = Field(max_length=100)
-
-
-class EditoraSaida(SchemaBase):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: str
-    nome: str
-
-
-class CategoriaEntrada(SchemaBase):
-    nome: str = Field(max_length=50)
-
-
-class CategoriaSaida(SchemaBase):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: str
-    nome: str
-
-
-class LivroEntrada(SchemaBase):
-    titulo: str = Field(max_length=60)
-    ano_publicacao: date
-    id_editora: str
-    id_categoria: str
-    id_autores: list[str] = Field(default_factory=list)
-
-
-class LivroSaida(SchemaBase):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: str
-    titulo: str
-    ano_publicacao: date
-    id_editora: str
-    id_categoria: str
-    autores: list[AutorSaida]

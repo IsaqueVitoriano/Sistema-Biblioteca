@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.crud.editora import *
 from app.database import get_session
-from app.models.models import EditoraSaida
+from app.schemas.entidades import EditoraSaida
 
 router = APIRouter(prefix="/editoras", tags=["Editoras"])
 

@@ -2,7 +2,8 @@ from sqlalchemy import select, func, extract
 from sqlalchemy.orm import Session, selectinload
 
 from app.utils.util import commit_or_conflict, get_or_404
-from app.models.models import Autor, Categoria, Editora, Livro, LivroEntrada
+from app.models.models import Autor, Categoria, Editora, Livro, Exemplar
+from app.schemas.entidades import LivroEntrada
 
 
 def criar_livros(dados: LivroEntrada, session: Session):
@@ -104,12 +105,12 @@ def atualizar_livro(livro_id: str, dados: LivroEntrada, session: Session):
     get_or_404(session, Editora, dados.id_editora)
     get_or_404(session, Categoria, dados.id_categoria)
 
+    autores: list[Autor] = []
+
     if dados.id_autores:
-        autores = session.scalars(
-            select(Autor).where(Autor.id.in_(dados.id_autores))
-        ).all()
-    else:
-        autores = []
+        autores = list(
+            session.scalars(select(Autor).where(Autor.id.in_(dados.id_autores))).all()
+        )
 
     autores_encontrados = {autor.id for autor in autores}
 
@@ -142,3 +143,8 @@ def apagar_livro(livro_id: str, session: Session):
     session.delete(livro)
     commit_or_conflict(session)
     return {"mensagem": "Livro apagado com sucesso!"}
+
+
+def listar_exemplares_por_livros(session: Session, livro_id: str):
+    consulta = select(Exemplar).where(Exemplar.id_livro == livro_id)
+    return session.execute(consulta).scalars().all()

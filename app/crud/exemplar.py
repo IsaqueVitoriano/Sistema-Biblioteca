@@ -2,8 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.utils.util import commit_or_conflict, get_or_404
-from app.models.models import Exemplar, ExemplarEntrada, Livro
-
+from app.models.models import Exemplar, Livro
+from app.schemas.entidades import ExemplarEntrada
 
 def criar_exemplares(dados: ExemplarEntrada, session: Session):
     get_or_404(session, Livro, dados.id_livro)

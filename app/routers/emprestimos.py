@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, Query
 
 from app.crud.emprestimo import *
 from app.database import get_session
-from app.models.models import EmprestimoSaida
-from app.schemas.paginacao import EmprestimoPaginadoSaida
+from app.schemas.entidades import EmprestimoSaida
+from app.schemas.entidades import EmprestimoPaginadoSaida
 
 router = APIRouter(prefix="/emprestimos", tags=["Empréstimos"])
 

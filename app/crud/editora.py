@@ -2,8 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.utils.util import commit_or_conflict, get_or_404
-from app.models.models import Editora, EditoraEntrada
-
+from app.models.models import Editora
+from app.schemas.entidades import EditoraEntrada
 
 def criar_editoras(dados: EditoraEntrada, session: Session):
     editora = Editora(nome=dados.nome)

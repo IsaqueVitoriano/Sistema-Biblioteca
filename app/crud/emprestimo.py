@@ -4,11 +4,11 @@ from sqlalchemy.orm import Session
 from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import (
     Emprestimo,
-    EmprestimoEntrada,
     Exemplar,
     Usuario,
     SituacaoEmprestimo,
 )
+from app.schemas.entidades import EmprestimoEntrada
 
 
 def validar_fks(session: Session, dados: EmprestimoEntrada) -> None:
