@@ -5,7 +5,7 @@ from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Usuario, UsuarioEntrada, UsuarioSaida
 
 
-def criar_usuario(dados: UsuarioEntrada, session: Session):
+def criar_usuarios(dados: UsuarioEntrada, session: Session):
     usuario = Usuario(**dados.model_dump())
 
     session.add(usuario)

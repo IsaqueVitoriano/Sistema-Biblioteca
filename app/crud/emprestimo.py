@@ -16,7 +16,7 @@ def validar_fks(session: Session, dados: EmprestimoEntrada) -> None:
     get_or_404(session, Exemplar, dados.id_exemplar)
 
 
-def criar_emprestimo(dados: EmprestimoEntrada, session: Session):
+def criar_emprestimos(dados: EmprestimoEntrada, session: Session):
     validar_fks(session, dados)
 
     emprestimo = Emprestimo(**dados.model_dump())

@@ -5,7 +5,7 @@ from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Autor, Categoria, Editora, Livro, LivroEntrada
 
 
-def criar_livro(dados: LivroEntrada, session: Session):
+def criar_livros(dados: LivroEntrada, session: Session):
     get_or_404(session, Editora, dados.id_editora)
     get_or_404(session, Categoria, dados.id_categoria)
 
