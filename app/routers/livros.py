@@ -1,14 +1,15 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from app.models.models import LivroSaida, LivroEntrada
-from app.schemas.paginacao import LivroPaginadoSaida
+from app.schemas.entidades import LivroSaida, LivroEntrada
+from app.schemas.entidades import LivroPaginadoSaida, ExemplarSaida
 from app.crud.livro import (
     listar_livros,
     obter_livro,
     atualizar_livro,
     criar_livros,
     apagar_livro,
+    listar_exemplares_por_livros,
 )
 from app.database import get_session
 
@@ -56,3 +57,8 @@ def criar_livro(novo_livro: LivroEntrada, session: Session = Depends(get_session
 @router.delete("/{id}", response_model=dict[str, str])
 def deletar_livro_id(id: str, session: Session = Depends(get_session)):
     return apagar_livro(id, session)
+
+
+@router.get("/{livro_id}/exemplares", response_model=list[ExemplarSaida])
+def listar_exemplares_livro(livro_id: str, session: Session = Depends(get_session)):
+    return listar_exemplares_por_livros(session, livro_id)

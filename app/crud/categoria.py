@@ -2,8 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.utils.util import commit_or_conflict, get_or_404
-from app.models.models import Categoria, CategoriaEntrada
-
+from app.models.models import Categoria
+from app.schemas.entidades import CategoriaEntrada
 
 def criar_categoria(dados: CategoriaEntrada, session: Session):
     categoria = Categoria(nome=dados.nome)

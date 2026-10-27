@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.crud.exemplar import *
 from app.database import get_session
-from app.models.models import ExemplarSaida
+from app.schemas.entidades import ExemplarSaida
 
 router = APIRouter(prefix="/exemplares", tags=["Exemplares"])
 

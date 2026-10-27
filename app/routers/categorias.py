@@ -7,7 +7,7 @@ from app.crud.categoria import (
 )
 from sqlalchemy.orm import Session
 from app.database import get_session
-from app.models.models import CategoriaSaida, CategoriaEntrada
+from app.schemas.entidades import CategoriaSaida, CategoriaEntrada
 
 router = APIRouter(prefix="/categorias", tags=["Categorias"])
 
