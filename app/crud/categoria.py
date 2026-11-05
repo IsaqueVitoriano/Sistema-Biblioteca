@@ -1,9 +1,10 @@
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
 from app.utils.util import commit_or_conflict, get_or_404
-from app.models.models import Categoria
+from app.models.models import Categoria, Emprestimo, Exemplar, Livro
 from app.schemas.entidades import CategoriaEntrada
+
 
 def criar_categoria(dados: CategoriaEntrada, session: Session):
     categoria = Categoria(nome=dados.nome)
@@ -36,4 +37,28 @@ def apagar_categoria(categoria_id: str, session: Session):
 
     session.delete(categoria)
     commit_or_conflict(session)
-    return {"mensagem": "Categoria apagada com sucesso" }
+    return {"mensagem": "Categoria apagada com sucesso"}
+
+
+def categoria_com_atrasos(session: Session):
+    consulta_complexa = (
+        (
+            select(Categoria.nome, func.count(Emprestimo.id))
+            .join(Livro, Livro.id_categoria == Categoria.id)
+            .join(Exemplar, Livro.id == Exemplar.id_livro)
+            .join(Emprestimo, Emprestimo.id_exemplar == Exemplar.id)
+            .where(Emprestimo.situacao_emprestimo == "ATRASADO")
+        )
+        .group_by(Categoria.nome)
+        .order_by(func.count(Emprestimo.id).desc())
+    )
+
+    resultados = session.execute(consulta_complexa).all()
+
+    atrasos_categoria = []
+    for nome_categoria, qtd_atrasos in resultados:
+        atrasos_categoria.append(
+            {"nome_categoria": nome_categoria, "qtd_atrasos": qtd_atrasos}
+        )
+
+    return atrasos_categoria

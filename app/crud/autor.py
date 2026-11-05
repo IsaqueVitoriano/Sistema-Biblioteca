@@ -1,8 +1,8 @@
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
 from app.utils.util import commit_or_conflict, get_or_404
-from app.models.models import Autor, Livro, livro_autor
+from app.models.models import Autor, Livro, livro_autor, Categoria
 from app.schemas.entidades import AutorEntrada
 
 
@@ -37,7 +37,7 @@ def apagar_autor(autor_id: str, session: Session):
 
     session.delete(autor)
     commit_or_conflict(session)
-    return {"mensagem": "Autor apagado com sucesso" }
+    return {"mensagem": "Autor apagado com sucesso"}
 
 
 def listar_livros_por_autor(session: Session, autor_id: str):
@@ -48,3 +48,26 @@ def listar_livros_por_autor(session: Session, autor_id: str):
     )
 
     return session.execute(consulta).scalars().all()
+
+
+def livros_por_categoria(session: Session):
+    consulta_complexa = (
+        (
+            select(func.count(Livro.id), Categoria.nome, Autor.nome)
+            .join(Categoria, Livro.id_categoria == Categoria.id)
+            .join(livro_autor, Livro.id == livro_autor.c.livro_id)
+            .join(Autor, livro_autor.c.autor_id == Autor.id)
+        )
+        .group_by(Categoria.nome, Autor.nome)
+        .order_by(func.count(Livro.id).desc(), Autor.nome)
+    )
+
+    resultados = session.execute(consulta_complexa).all()
+
+    ranking = []
+    for quantidade, categoria, autor in resultados:
+        ranking.append(
+            {"qtd_obras": quantidade, "nome_categoria": categoria, "nome_autor": autor}
+        )
+
+    return ranking
