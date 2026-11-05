@@ -6,21 +6,16 @@ from sqlalchemy.orm import Session
 
 from app.models.models import Base
 
-
 ModelType = TypeVar("ModelType", bound=Base)
 
 
 def get_or_404(session: Session, model: type[ModelType], id: str) -> ModelType:
     if not id:
-        raise HTTPException(
-            status_code=400,
-            detail="id inválido"
-                            )
+        raise HTTPException(status_code=400, detail="id inválido")
 
     instance = session.get(model, id)
     if instance is None:
-        raise HTTPException(status_code=404,
-                            detail=f"{model.__name__} não encontrado")
+        raise HTTPException(status_code=404, detail=f"{model.__name__} não encontrado")
     return instance
 
 
