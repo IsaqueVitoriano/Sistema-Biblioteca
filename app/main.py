@@ -1,7 +1,13 @@
 from fastapi import FastAPI
 from app.routers import (
     livros,
-    emprestimos, categorias, autores, exemplares, editoras, usuarios,
+    emprestimos,
+    categorias,
+    autores,
+    exemplares,
+    editoras,
+    usuarios,
+    relatorios
 )
 
 app = FastAPI(
@@ -17,3 +23,4 @@ app.include_router(autores.router)
 app.include_router(exemplares.router)
 app.include_router(usuarios.router)
 app.include_router(editoras.router)
+app.include_router(relatorios.router)
