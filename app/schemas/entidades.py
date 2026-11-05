@@ -128,3 +128,14 @@ class HistoricoEmprestimoSaida(BaseModel):
     situacao_exemplar: SituacaoExemplar
     id_livro: str
     titulo_livro: str
+
+
+class RankingAutorCategoriaSaida(BaseModel):
+    qtd_obras: int
+    nome_categoria: str
+    nome_autor: str
+
+
+class CategoriasComMaisAtrasos(BaseModel):
+    nome_categoria: str
+    qtd_atrasos: int
