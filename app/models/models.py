@@ -2,12 +2,9 @@ from datetime import datetime, date
 from enum import Enum as PythonEnum
 from uuid import uuid4
 
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Enum as SQLAlchemyEnum, ForeignKey, Table, Column
-
-
-class Base(DeclarativeBase):
-    pass
+from app.database import Base
 
 
 livro_autor = Table(
