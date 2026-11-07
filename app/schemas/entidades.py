@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from app.models.models import TipoUsuario, SituacaoEmprestimo, SituacaoExemplar
 
 class Estatistica(BaseModel):
-    qtd_registro_categoria: dict[str,int] # categoria tal: 2
+    qtd_registro_livro_categoria: dict[str,int] # categoria tal: 2
     qtd_exemplar_situacao: dict[str,int] # disponivel: 3
     qtd_emprestimo_livro: dict[str,int] # livro tal: 4
     tempo_medio_emprestimo: float
