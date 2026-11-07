@@ -3,15 +3,14 @@ from pydantic import BaseModel, ConfigDict, Field
 from app.models.models import TipoUsuario, SituacaoEmprestimo, SituacaoExemplar
 
 class Estatistica(BaseModel):
-    qtd_registro_livro_categoria: dict[str,int] # categoria tal: 2
-    qtd_exemplar_situacao: dict[str,int] # disponivel: 3
-    qtd_emprestimo_livro: dict[str,int] # livro tal: 4
+    qtd_livro_categoria: dict[str,int]
+    qtd_exemplar_situacao: dict[str,int]
     tempo_medio_emprestimo: float
-    data_primeiro_emprestimo: str
-    data_ultimo_emprestimo: str
+    data_primeiro_emprestimo: date
+    data_ultimo_emprestimo: date
+    tot_paginas_categoria: dict[str, int]
 
 ##  específica do tema
-
 
 
 class AutorEntrada(BaseModel):
@@ -100,6 +99,7 @@ class LivroEntrada(BaseModel):
     id_editora: str
     id_categoria: str
     id_autores: list[str] = Field(default_factory=list)
+    numero_paginas: int
 
 
 class LivroSaida(BaseModel):
@@ -110,6 +110,7 @@ class LivroSaida(BaseModel):
     id_editora: str
     id_categoria: str
     autores: list[AutorSaida]
+    numero_paginas: int
 
 
 class PaginacaoInfo(BaseModel):
