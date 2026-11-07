@@ -164,7 +164,7 @@ class Livro(Base):
     )
 
     id_categoria: Mapped[str] = mapped_column(
-        ForeignKey("categoria.id"), comment="Id do categoria do livro"
+         ForeignKey("categoria.id"), comment="Id do categoria do livro"
     )
 
     autores: Mapped[list["Autor"]] = relationship(
