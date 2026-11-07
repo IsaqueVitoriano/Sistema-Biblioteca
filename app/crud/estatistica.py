@@ -9,11 +9,11 @@ async def gerar_estatisticas(session: Session) -> Estatistica:
     estatisticas = Estatistica(
         qtd_registro_livro_categoria=gerar_qtd_registro_livro_categoria(session),
         qtd_exemplar_situacao= gerar_qtd_exemplar_situacao(session),
-        tempo_medio_emprestimo= ,
-        data_primeiro_emprestimo= ,
-        data_ultimo_emprestimo= ,
-
-        qtd_emprestimo_livro=
+        tempo_medio_emprestimo= gerar_tempo_medio_emprestimo(session),
+        data_primeiro_emprestimo= gerar_data_primeiro_emprestimo(session),
+        data_ultimo_emprestimo= gerar_data_ultimo_emprestimo(session),
+        # Especifica do tema
+        qtd_emprestimo_livro= gerar_qtd_emprestimo_categoria_livro(session)
     )
 
     return estatisticas
