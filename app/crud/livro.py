@@ -35,6 +35,7 @@ def criar_livros(dados: LivroEntrada, session: Session):
         titulo=dados.titulo,
         ano_publicacao=dados.ano_publicacao,
         id_editora=dados.id_editora,
+        paginas= dados.numero_paginas,
         id_categoria=dados.id_categoria,
         autores=autores,
     )
