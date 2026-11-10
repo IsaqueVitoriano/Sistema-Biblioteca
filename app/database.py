@@ -1,7 +1,6 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from app.models.models import Base
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./Biblioteca.db")
 
