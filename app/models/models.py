@@ -109,7 +109,7 @@ class Usuario(Base):
     )
 
     telefone: Mapped[str | None] = mapped_column(
-        String(20), nullable=True, comment="Telefone do usuario"
+        String(20), nullable=False, comment="Telefone do usuario"
     )
 
     tipo_usuario: Mapped[TipoUsuario | None] = mapped_column(
