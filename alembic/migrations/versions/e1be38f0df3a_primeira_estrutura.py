@@ -1,8 +1,8 @@
 """primeira_estrutura
 
-Revision ID: 2a15abaef6e7
+Revision ID: e1be38f0df3a
 Revises: 
-Create Date: 2026-11-10 14:22:33.376875
+Create Date: 2026-11-10 20:41:19.664264
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '2a15abaef6e7'
+revision: str = 'e1be38f0df3a'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -52,7 +52,8 @@ def upgrade() -> None:
     sa.Column('titulo', sa.String(length=60), nullable=False, comment='Titulo do livro'),
     sa.Column('ano_publicacao', sa.Date(), nullable=False, comment='Ano de publicacao do livro'),
     sa.Column('id_editora', sa.String(), nullable=False, comment='Id do editora do livro'),
-    sa.Column('id_categoria', sa.String(), nullable=False, comment='Id do editora do livro'),
+    sa.Column('paginas', sa.Integer(), nullable=False, comment='Paginas do livro'),
+    sa.Column('id_categoria', sa.String(), nullable=False, comment='Id do categoria do livro'),
     sa.ForeignKeyConstraint(['id_categoria'], ['categoria.id'], ),
     sa.ForeignKeyConstraint(['id_editora'], ['editora.id'], ),
     sa.PrimaryKeyConstraint('id')
