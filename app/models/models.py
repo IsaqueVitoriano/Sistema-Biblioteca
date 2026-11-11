@@ -108,10 +108,6 @@ class Usuario(Base):
         unique=True, nullable=False, comment="Matricula do usuario"
     )
 
-    telefone: Mapped[str | None] = mapped_column(
-        String(20), nullable=False, comment="Telefone do usuario"
-    )
-
     tipo_usuario: Mapped[TipoUsuario | None] = mapped_column(
         SQLAlchemyEnum(TipoUsuario, native_enum=False),
         comment="Tipo do usuario",
