@@ -61,5 +61,3 @@ def gerar_total_paginas_categoria(session: Session): #sum
     ).join(Livro.id_categoria).group_by(Categoria.nome).all()
 
     return {categoria: tot for categoria, tot in registros}
-
-# Especifica do tema
