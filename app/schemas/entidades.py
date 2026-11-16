@@ -2,15 +2,14 @@ from datetime import datetime, date
 from pydantic import BaseModel, ConfigDict, Field
 from app.models.models import TipoUsuario, SituacaoEmprestimo, SituacaoExemplar
 
+
 class Estatistica(BaseModel):
-    qtd_livro_categoria: dict[str,int]
-    qtd_exemplar_situacao: dict[str,int]
+    qtd_livro_categoria: dict[str, int]
+    qtd_exemplar_situacao: dict[str, int]
     tempo_medio_emprestimo: float
     data_primeiro_emprestimo: date
     data_ultimo_emprestimo: date
     tot_paginas_categoria: dict[str, int]
-
-##  específica do tema
 
 
 class AutorEntrada(BaseModel):
@@ -110,7 +109,7 @@ class LivroSaida(BaseModel):
     id_editora: str
     id_categoria: str
     autores: list[AutorSaida]
-    numero_paginas: int
+    numero_paginas: int = Field(validation_alias="paginas")
 
 
 class PaginacaoInfo(BaseModel):
