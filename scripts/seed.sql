@@ -49,39 +49,39 @@ INSERT INTO autor (id, nome) VALUES
 ('5a7b9d0f-1c3e-4345-8c9d-0e1f2a3b4c5d', 'James Gosling'),
 ('7b9d0f1c-3e5a-4567-8e9f-0a1b2c3d4e5f', 'Dennis Ritchie');
 
-INSERT INTO usuario (id, nome, data_criacao, email, matricula, tipo_usuario) VALUES
-('8c9d0e1f-2a3b-4789-8b9c-0d1e2f3a4b5c', 'Ana Silva', '2023-02-15 08:30:00', 'ana.silva@email.com', 'MAT001', 'ALUNO'),
-('a1b2c3d4-e5f6-4901-8d9e-0f1a2b3c4d5e', 'Carlos Mendes', '2023-03-10 14:15:22', 'carlos.m@email.com', 'MAT002', 'PROFESSOR'),
-('c3d4e5f6-a7b8-4123-8f1a-2b3c4d5e6f7a', 'Admin Biblioteca', '2022-11-01 09:00:00', 'admin@biblioteca.com', 'MAT003', 'ADMINISTRADOR'),
-('e5f6a7b8-c9d0-4345-8a9b-0c1d2e3f4a5b', 'João Pedro', '2023-04-05 10:45:10', 'joao.p@email.com', 'MAT004', 'ALUNO'),
-('0f1a2b3c-4d5e-4567-8c9d-0e1f2a3b4c5d', 'Mariana Costa', '2023-05-20 16:20:35', 'mariana.c@email.com', 'MAT005', 'SERVIDOR'),
-('2b3c4d5e-6f7a-4789-8e9f-0a1b2c3d4e5f', 'Lucas Almeida', '2023-06-12 11:10:05', 'lucas.a@email.com', 'MAT006', 'ALUNO'),
-('4d5e6f7a-8b9c-4901-8a9b-0c1d2e3f4a5b', 'Fernanda Lima', '2022-12-05 07:55:50', 'fernanda.l@email.com', 'MAT007', 'PROFESSOR'),
-('6f7a8b9c-0d1e-4123-8c9d-0e1f2a3b4c5d', 'Rafael Gomes', '2023-07-22 13:40:15', 'rafael.g@email.com', 'MAT008', 'ALUNO'),
-('8b9c0d1e-2f3a-4345-8e9f-0a1b2c3d4e5f', 'Juliana Castro', '2023-08-14 15:25:30', 'juliana.c@email.com', 'MAT009', 'SERVIDOR'),
-('a0d1e2f3-a4b5-4567-8a9b-0c1d2e3f4a5b', 'Roberto Dias', '2023-09-01 18:05:45', 'roberto.d@email.com', 'MAT010', 'ALUNO'),
-('c2f3a4b5-c6d7-4789-8c9d-0e1f2a3b4c5d', 'Camila Rocha', '2023-09-15 09:15:20', 'camila.r@email.com', 'MAT011', 'ALUNO'),
-('e4a5b6c7-d8e9-4901-8e9f-0a1b2c3d4e5f', 'Felipe Santos', '2022-10-18 08:00:00', 'felipe.s@email.com', 'MAT012', 'PROFESSOR'),
-('0a1b2c3d-4e5f-4123-8a9b-0c1d2e3f4a5b', 'Beatriz Alves', '2023-10-02 14:35:10', 'beatriz.a@email.com', 'MAT013', 'ALUNO'),
-('2c3d4e5f-6a7b-4345-8c9d-0e1f2a3b4c5d', 'Thiago Nunes', '2023-10-10 17:50:55', 'thiago.n@email.com', 'MAT014', 'SERVIDOR'),
-('4e5f6a7b-8c9d-4567-8e9f-0a1b2c3d4e5f', 'Larissa Moura', '2023-11-05 11:11:11', 'larissa.m@email.com', 'MAT015', 'ALUNO');
+INSERT INTO usuario (id, nome, data_criacao, email, matricula, tipo_usuario, telefone) VALUES
+('8c9d0e1f-2a3b-4789-8b9c-0d1e2f3a4b5c', 'Ana Silva', '2023-02-15 08:30:00', 'ana.silva@email.com', 'MAT001', 'ALUNO', '88999990001'),
+('a1b2c3d4-e5f6-4901-8d9e-0f1a2b3c4d5e', 'Carlos Mendes', '2023-03-10 14:15:22', 'carlos.m@email.com', 'MAT002', 'PROFESSOR', '88999990002'),
+('c3d4e5f6-a7b8-4123-8f1a-2b3c4d5e6f7a', 'Admin Biblioteca', '2022-11-01 09:00:00', 'admin@biblioteca.com', 'MAT003', 'ADMINISTRADOR', '88999990003'),
+('e5f6a7b8-c9d0-4345-8a9b-0c1d2e3f4a5b', 'João Pedro', '2023-04-05 10:45:10', 'joao.p@email.com', 'MAT004', 'ALUNO', '88999990004'),
+('0f1a2b3c-4d5e-4567-8c9d-0e1f2a3b4c5d', 'Mariana Costa', '2023-05-20 16:20:35', 'mariana.c@email.com', 'MAT005', 'SERVIDOR', '88999990005'),
+('2b3c4d5e-6f7a-4789-8e9f-0a1b2c3d4e5f', 'Lucas Almeida', '2023-06-12 11:10:05', 'lucas.a@email.com', 'MAT006', 'ALUNO', '88999990006'),
+('4d5e6f7a-8b9c-4901-8a9b-0c1d2e3f4a5b', 'Fernanda Lima', '2022-12-05 07:55:50', 'fernanda.l@email.com', 'MAT007', 'PROFESSOR', '88999990007'),
+('6f7a8b9c-0d1e-4123-8c9d-0e1f2a3b4c5d', 'Rafael Gomes', '2023-07-22 13:40:15', 'rafael.g@email.com', 'MAT008', 'ALUNO', '88999990008'),
+('8b9c0d1e-2f3a-4345-8e9f-0a1b2c3d4e5f', 'Juliana Castro', '2023-08-14 15:25:30', 'juliana.c@email.com', 'MAT009', 'SERVIDOR', '88999990008'),
+('a0d1e2f3-a4b5-4567-8a9b-0c1d2e3f4a5b', 'Roberto Dias', '2023-09-01 18:05:45', 'roberto.d@email.com', 'MAT010', 'ALUNO', '88999990009'),
+('c2f3a4b5-c6d7-4789-8c9d-0e1f2a3b4c5d', 'Camila Rocha', '2023-09-15 09:15:20', 'camila.r@email.com', 'MAT011', 'ALUNO', '88999990010'),
+('e4a5b6c7-d8e9-4901-8e9f-0a1b2c3d4e5f', 'Felipe Santos', '2022-10-18 08:00:00', 'felipe.s@email.com', 'MAT012', 'PROFESSOR', '88999990011'),
+('0a1b2c3d-4e5f-4123-8a9b-0c1d2e3f4a5b', 'Beatriz Alves', '2023-10-02 14:35:10', 'beatriz.a@email.com', 'MAT013', 'ALUNO', '88999990012'),
+('2c3d4e5f-6a7b-4345-8c9d-0e1f2a3b4c5d', 'Thiago Nunes', '2023-10-10 17:50:55', 'thiago.n@email.com', 'MAT014', 'SERVIDOR', '88999990013'),
+('4e5f6a7b-8c9d-4567-8e9f-0a1b2c3d4e5f', 'Larissa Moura', '2023-11-05 11:11:11', 'larissa.m@email.com', 'MAT015', 'ALUNO', '88999990014');
 
-INSERT INTO livro (id, titulo, ano_publicacao, id_editora, id_categoria) VALUES
-('11a2b3c4-d5e6-4789-8b9c-0d1e2f3a4b5c', 'Código Limpo', '2009-09-08', '4f18d745-0df9-4c48-b9f1-df7413d09204', 'f4b3a2d1-e5c6-4789-9a0b-1c2d3e4f5a6b'),
-('22b3c4d5-e6f7-4901-8d9e-0f1a2b3c4d5e', 'Sistemas de Banco de Dados', '2011-05-15', 'e1c3d9a0-d2b3-4f93-8f0a-c8e6a2b0e6c4', '8d7e6f5a-4b3c-4210-8e9f-0a1b2c3d4e5f'),
-('33c4d5e6-f7a8-4123-8f1a-2b3c4d5e6f7a', 'Redes de Computadores', '2003-01-10', 'b0f4c391-76a3-481d-b8d9-3172e9a6f8b5', '1c2d3e4f-5a6b-4789-8c9d-0e1f2a3b4c5d'),
-('44d5e6f7-a8b9-4345-8a9b-0c1d2e3f4a5b', 'Engenharia de Software', '2011-02-20', '9d2a6c8e-3f1b-4137-a2f4-8c7e09b5d6a1', '3e4f5a6b-7c8d-4901-8e9f-0a1b2c3d4e5f'),
-('55e6f7a8-b9c0-4567-8c9d-0e1f2a3b4c5d', 'Algoritmos: Teoria e Prática', '2012-04-01', 'a1b5f7e3-0c9d-4e82-9f3a-6d4c2b8e1f0a', '5a6b7c8d-9e0f-4123-8a9b-0c1d2e3f4a5b'),
-('66f7a8b9-c0d1-4789-8e9f-0a1b2c3d4e5f', 'Arquitetura Limpa', '2019-01-15', '7c2f8a4b-1e6d-4950-a3b7-0f5d9c1e2a8b', '7c8d9e0f-1a2b-4345-8c9d-0e1f2a3b4c5d'),
-('77a8b9c0-d1e2-4901-8a9b-0c1d2e3f4a5b', 'Domain-Driven Design', '2003-08-30', '3d9e2b1f-8a4c-4765-b0f3-5c1a7e6d9b2a', '9e0f1a2b-3c4d-4567-8e9f-0a1b2c3d4e5f'),
-('88b9c0d1-e2f3-4123-8c9d-0e1f2a3b4c5d', 'Sistemas Operacionais Modernos', '2001-03-12', '5a6b7c8d-9e0f-4123-b456-c789d0e1f2a3', 'b0c1d2e3-f4a5-4789-8c9d-0e1f2a3b4c5d'),
-('99c0d1e2-f3a4-4345-8e9f-0a1b2c3d4e5f', 'A Arte da Programação', '1968-01-01', 'f1e2d3c4-b5a6-4789-8012-3f4e5d6c7b8a', 'd2e3f4a5-b6c7-4901-8e9f-0a1b2c3d4e5f'),
-('aac1e2f3-a4b5-4567-8a9b-0c1d2e3f4a5b', 'Inteligência Artificial', '2010-12-11', 'c8a9b0d1-e2f3-4456-b789-0f1a2b3c4d5e', 'f4a5b6c7-d8e9-4123-8c9d-0e1f2a3b4c5d'),
-('bbe2f3a4-b5c6-4789-8c9d-0e1f2a3b4c5d', 'Segurança em Redes', '2015-06-25', '1b2c3d4e-5f6a-4789-8b9c-0d1e2f3a4b5c', '1a2b3c4d-5e6f-4345-8e9f-0a1b2c3d4e5f'),
-('ccf3a4b5-c6d7-4901-8e9f-0a1b2c3d4e5f', 'Dev Web com Node.js', '2018-09-10', 'e3f4a5b6-c7d8-4901-b234-5c6d7e8f9a0b', '3c4d5e6f-7a8b-4567-8c9d-0e1f2a3b4c5d'),
-('dda4b5c6-d7e8-4123-8a9b-0c1d2e3f4a5b', 'Introdução à Ciência de Dados', '2020-03-05', '6d7e8f9a-0b1c-4234-b567-8c9d0e1f2a3b', '5e6f7a8b-9c0d-4789-8e9f-0a1b2c3d4e5f'),
-('eeb5c6d7-e8f9-4345-8c9d-0e1f2a3b4c5d', 'Manual de DevOps', '2016-10-06', 'a0b1c2d3-e4f5-4678-b901-2a3b4c5d6e7f', '7a8b9c0d-1e2f-4901-8c9d-0e1f2a3b4c5d'),
-('ffc6d7e8-f9a0-4567-8e9f-0a1b2c3d4e5f', 'Programação Android', '2021-08-20', '2f3a4b5c-6d7e-4890-b123-4e5f6a7b8c9d', '9c0d1e2f-3a4b-4123-8e9f-0a1b2c3d4e5f');
+INSERT INTO livro (id, titulo, ano_publicacao, id_editora, paginas, id_categoria) VALUES
+('11a2b3c4-d5e6-4789-8b9c-0d1e2f3a4b5c', 'Código Limpo', '2009-09-08', '4f18d745-0df9-4c48-b9f1-df7413d09204', 291, 'f4b3a2d1-e5c6-4789-9a0b-1c2d3e4f5a6b'),
+('22b3c4d5-e6f7-4901-8d9e-0f1a2b3c4d5e', 'Sistemas de Banco de Dados', '2011-05-15', 'e1c3d9a0-d2b3-4f93-8f0a-c8e6a2b0e6c4', 325, '8d7e6f5a-4b3c-4210-8e9f-0a1b2c3d4e5f'),
+('33c4d5e6-f7a8-4123-8f1a-2b3c4d5e6f7a', 'Redes de Computadores', '2003-01-10', 'b0f4c391-76a3-481d-b8d9-3172e9a6f8b5', 122, '1c2d3e4f-5a6b-4789-8c9d-0e1f2a3b4c5d'),
+('44d5e6f7-a8b9-4345-8a9b-0c1d2e3f4a5b', 'Engenharia de Software', '2011-02-20', '9d2a6c8e-3f1b-4137-a2f4-8c7e09b5d6a1', 145, '3e4f5a6b-7c8d-4901-8e9f-0a1b2c3d4e5f'),
+('55e6f7a8-b9c0-4567-8c9d-0e1f2a3b4c5d', 'Algoritmos: Teoria e Prática', '2012-04-01', 'a1b5f7e3-0c9d-4e82-9f3a-6d4c2b8e1f0a', 300, '5a6b7c8d-9e0f-4123-8a9b-0c1d2e3f4a5b'),
+('66f7a8b9-c0d1-4789-8e9f-0a1b2c3d4e5f', 'Arquitetura Limpa', '2019-01-15', '7c2f8a4b-1e6d-4950-a3b7-0f5d9c1e2a8b', 402, '7c8d9e0f-1a2b-4345-8c9d-0e1f2a3b4c5d'),
+('77a8b9c0-d1e2-4901-8a9b-0c1d2e3f4a5b', 'Domain-Driven Design', '2003-08-30', '3d9e2b1f-8a4c-4765-b0f3-5c1a7e6d9b2a', 150, '9e0f1a2b-3c4d-4567-8e9f-0a1b2c3d4e5f'),
+('88b9c0d1-e2f3-4123-8c9d-0e1f2a3b4c5d', 'Sistemas Operacionais Modernos', '2001-03-12', '5a6b7c8d-9e0f-4123-b456-c789d0e1f2a3', 179, 'b0c1d2e3-f4a5-4789-8c9d-0e1f2a3b4c5d'),
+('99c0d1e2-f3a4-4345-8e9f-0a1b2c3d4e5f', 'A Arte da Programação', '1968-01-01', 'f1e2d3c4-b5a6-4789-8012-3f4e5d6c7b8a', 210, 'd2e3f4a5-b6c7-4901-8e9f-0a1b2c3d4e5f'),
+('aac1e2f3-a4b5-4567-8a9b-0c1d2e3f4a5b', 'Inteligência Artificial', '2010-12-11', 'c8a9b0d1-e2f3-4456-b789-0f1a2b3c4d5e', 450, 'f4a5b6c7-d8e9-4123-8c9d-0e1f2a3b4c5d'),
+('bbe2f3a4-b5c6-4789-8c9d-0e1f2a3b4c5d', 'Segurança em Redes', '2015-06-25', '1b2c3d4e-5f6a-4789-8b9c-0d1e2f3a4b5c', 195, '1a2b3c4d-5e6f-4345-8e9f-0a1b2c3d4e5f'),
+('ccf3a4b5-c6d7-4901-8e9f-0a1b2c3d4e5f', 'Dev Web com Node.js', '2018-09-10', 'e3f4a5b6-c7d8-4901-b234-5c6d7e8f9a0b', 269, '3c4d5e6f-7a8b-4567-8c9d-0e1f2a3b4c5d'),
+('dda4b5c6-d7e8-4123-8a9b-0c1d2e3f4a5b', 'Introdução à Ciência de Dados', '2020-03-05', '6d7e8f9a-0b1c-4234-b567-8c9d0e1f2a3b', 418, '5e6f7a8b-9c0d-4789-8e9f-0a1b2c3d4e5f'),
+('eeb5c6d7-e8f9-4345-8c9d-0e1f2a3b4c5d', 'Manual de DevOps', '2016-10-06', 'a0b1c2d3-e4f5-4678-b901-2a3b4c5d6e7f', 220, '7a8b9c0d-1e2f-4901-8c9d-0e1f2a3b4c5d'),
+('ffc6d7e8-f9a0-4567-8e9f-0a1b2c3d4e5f', 'Programação Android', '2021-08-20', '2f3a4b5c-6d7e-4890-b123-4e5f6a7b8c9d', 590, '9c0d1e2f-3a4b-4123-8e9f-0a1b2c3d4e5f');
 
 INSERT INTO livro_autor (livro_id, autor_id) VALUES
 ('11a2b3c4-d5e6-4789-8b9c-0d1e2f3a4b5c', 'b1c2d3e4-f5a6-4789-8b9c-0d1e2f3a4b5c'),
