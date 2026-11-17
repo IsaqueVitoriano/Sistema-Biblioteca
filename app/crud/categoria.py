@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
@@ -8,6 +9,16 @@ from app.schemas.entidades import CategoriaEntrada
 
 def criar_categoria(dados: CategoriaEntrada, session: Session):
     categoria = Categoria(nome=dados.nome)
+
+    categoria_existe = session.scalars(
+        select(Categoria.nome).where(Categoria.nome == dados.nome)
+    )
+
+    if categoria_existe:
+        raise HTTPException(
+            status_code=409,
+            detail="Já existe uma categoria com esse título"
+        )
 
     session.add(categoria)
     commit_or_conflict(session)

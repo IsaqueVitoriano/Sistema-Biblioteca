@@ -149,7 +149,7 @@ class Categoria(Base):
         primary_key=True, default=lambda: str(uuid4()), comment="Id do categoria"
     )
 
-    nome: Mapped[str] = mapped_column(String(50), comment="Nome do categoria")
+    nome: Mapped[str] = mapped_column(String(50),unique=True, comment="Nome do categoria")
 
 
 class Livro(Base):
