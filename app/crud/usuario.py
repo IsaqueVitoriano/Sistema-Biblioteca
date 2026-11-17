@@ -20,6 +20,16 @@ def criar_usuarios(dados: UsuarioEntrada, session: Session):
             detail= "Já existe um usuário com esse e-mail"
         )
 
+    matricula_existente= session.scalars(
+        select(Usuario.matricula).where(Usuario.matricula == dados.matricula)
+    )
+
+    if matricula_existente:
+        raise HTTPException(
+            status_code=409,
+            detail="Já existe um usuário com essa matricula"
+        )
+
     usuario = Usuario(**dados.model_dump())
 
     session.add(usuario)
