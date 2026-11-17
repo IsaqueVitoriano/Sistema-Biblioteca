@@ -1,5 +1,4 @@
 from fastapi import HTTPException
-from pip._internal.cli import status_codes
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
