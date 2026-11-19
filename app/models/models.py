@@ -109,7 +109,7 @@ class Usuario(Base):
     )
 
     telefone: Mapped[str | None] = mapped_column(
-        String(20), nullable=False, comment="Telefone do usuario"
+        String(20), unique= True, nullable=False, comment="Telefone do usuario"
     )
 
     tipo_usuario: Mapped[TipoUsuario | None] = mapped_column(
@@ -149,7 +149,7 @@ class Categoria(Base):
         primary_key=True, default=lambda: str(uuid4()), comment="Id do categoria"
     )
 
-    nome: Mapped[str] = mapped_column(String(50), comment="Nome do categoria")
+    nome: Mapped[str] = mapped_column(String(50),unique=True, comment="Nome do categoria")
 
 
 class Livro(Base):
