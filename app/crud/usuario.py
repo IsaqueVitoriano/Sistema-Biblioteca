@@ -9,25 +9,22 @@ from app.schemas.entidades import UsuarioEntrada
 
 
 def criar_usuarios(dados: UsuarioEntrada, session: Session):
-
     email_existente = session.scalars(
         select(Usuario.id).where(Usuario.email == dados.email)
     )
 
     if email_existente:
         raise HTTPException(
-            status_code= 409,
-            detail= "Já existe um usuário com esse e-mail"
+            status_code=409, detail="Já existe um usuário com esse e-mail"
         )
 
-    matricula_existente= session.scalars(
+    matricula_existente = session.scalars(
         select(Usuario.matricula).where(Usuario.matricula == dados.matricula)
     )
 
     if matricula_existente:
         raise HTTPException(
-            status_code=409,
-            detail="Já existe um usuário com essa matricula"
+            status_code=409, detail="Já existe um usuário com essa matricula"
         )
 
     usuario = Usuario(**dados.model_dump())
