@@ -6,7 +6,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Enum as SQLAlchemyEnum, ForeignKey, Table, Column
 from app.database import Base
 
-
 livro_autor = Table(
     "livro_autor",
     Base.metadata,
@@ -39,16 +38,16 @@ class Emprestimo(Base):
     __tablename__ = "emprestimo"
 
     id: Mapped[str] = mapped_column(
-        primary_key=True, default=lambda: str(uuid4()), comment="Id da emprestimo"
+        primary_key=True, default=lambda: str(uuid4()), comment="Id do emprestimo"
     )
 
     situacao_emprestimo: Mapped[SituacaoEmprestimo] = mapped_column(
         SQLAlchemyEnum(SituacaoEmprestimo, native_enum=False),
         default=SituacaoEmprestimo.PENDENTE,
-        comment="status do emprestimo",
+        comment="Status do emprestimo",
     )
 
-    data_emprestimo: Mapped[datetime] = mapped_column(comment="Data da emprestimo")
+    data_emprestimo: Mapped[datetime] = mapped_column(comment="Data do emprestimo")
 
     data_devolucao_efetiva: Mapped[datetime | None] = mapped_column(
         comment="Data efetiva do emprestimo"
@@ -73,7 +72,7 @@ class Exemplar(Base):
     __tablename__ = "exemplar"
 
     id: Mapped[str] = mapped_column(
-        primary_key=True, default=lambda: str(uuid4()), comment="Id da exemplar"
+        primary_key=True, default=lambda: str(uuid4()), comment="Id do exemplar"
     )
 
     situacao: Mapped[SituacaoExemplar] = mapped_column(
@@ -98,7 +97,7 @@ class Usuario(Base):
         String(100), nullable=False, comment="Nome do usuario"
     )
 
-    data_criacao: Mapped[datetime] = mapped_column(comment="data de criacao do usuario")
+    data_criacao: Mapped[datetime] = mapped_column(comment="Data de criacao do usuario")
 
     email: Mapped[str] = mapped_column(
         String(150), unique=True, nullable=False, comment="Email do usuario"
@@ -109,7 +108,7 @@ class Usuario(Base):
     )
 
     telefone: Mapped[str | None] = mapped_column(
-        String(20), unique= True, nullable=False, comment="Telefone do usuario"
+        String(20), unique=True, nullable=False, comment="Telefone do usuario"
     )
 
     tipo_usuario: Mapped[TipoUsuario | None] = mapped_column(
@@ -122,10 +121,10 @@ class Editora(Base):
     __tablename__ = "editora"
 
     id: Mapped[str] = mapped_column(
-        primary_key=True, default=lambda: str(uuid4()), comment="Id do editora"
+        primary_key=True, default=lambda: str(uuid4()), comment="Id da editora"
     )
 
-    nome: Mapped[str] = mapped_column(String(100), comment="Nome do editora")
+    nome: Mapped[str] = mapped_column(String(100), comment="Nome da editora")
 
 
 class Autor(Base):
@@ -146,10 +145,12 @@ class Categoria(Base):
     __tablename__ = "categoria"
 
     id: Mapped[str] = mapped_column(
-        primary_key=True, default=lambda: str(uuid4()), comment="Id do categoria"
+        primary_key=True, default=lambda: str(uuid4()), comment="Id da categoria"
     )
 
-    nome: Mapped[str] = mapped_column(String(50),unique=True, comment="Nome do categoria")
+    nome: Mapped[str] = mapped_column(
+        String(50), unique=True, comment="Nome da categoria"
+    )
 
 
 class Livro(Base):
@@ -164,13 +165,13 @@ class Livro(Base):
     ano_publicacao: Mapped[date] = mapped_column(comment="Ano de publicacao do livro")
 
     id_editora: Mapped[str] = mapped_column(
-        ForeignKey("editora.id"), comment="Id do editora do livro"
+        ForeignKey("editora.id"), comment="Id da editora do livro"
     )
 
     paginas: Mapped[int] = mapped_column(comment="Paginas do livro")
 
     id_categoria: Mapped[str] = mapped_column(
-         ForeignKey("categoria.id"), comment="Id do categoria do livro"
+        ForeignKey("categoria.id"), comment="Id da categoria do livro"
     )
 
     autores: Mapped[list["Autor"]] = relationship(

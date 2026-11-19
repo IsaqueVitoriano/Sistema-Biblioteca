@@ -16,8 +16,7 @@ def criar_categoria(dados: CategoriaEntrada, session: Session):
 
     if categoria_existe:
         raise HTTPException(
-            status_code=409,
-            detail="Já existe uma categoria com esse título"
+            status_code=409, detail="Já existe uma categoria com esse nome"
         )
 
     session.add(categoria)
