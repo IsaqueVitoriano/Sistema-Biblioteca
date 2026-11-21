@@ -7,7 +7,8 @@ from app.routers import (
     exemplares,
     editoras,
     usuarios,
-    relatorios
+    relatorios,
+    funcionalidadeEspecifica
 )
 
 app = FastAPI(
@@ -24,3 +25,4 @@ app.include_router(exemplares.router)
 app.include_router(usuarios.router)
 app.include_router(editoras.router)
 app.include_router(relatorios.router)
+app.include_router(funcionalidadeEspecifica.router)
