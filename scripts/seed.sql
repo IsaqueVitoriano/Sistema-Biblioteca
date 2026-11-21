@@ -58,13 +58,13 @@ INSERT INTO usuario (id, nome, data_criacao, email, matricula, tipo_usuario, tel
 ('2b3c4d5e-6f7a-4789-8e9f-0a1b2c3d4e5f', 'Lucas Almeida', '2023-06-12 11:10:05', 'lucas.a@email.com', 'MAT006', 'ALUNO', '88999990006'),
 ('4d5e6f7a-8b9c-4901-8a9b-0c1d2e3f4a5b', 'Fernanda Lima', '2022-12-05 07:55:50', 'fernanda.l@email.com', 'MAT007', 'PROFESSOR', '88999990007'),
 ('6f7a8b9c-0d1e-4123-8c9d-0e1f2a3b4c5d', 'Rafael Gomes', '2023-07-22 13:40:15', 'rafael.g@email.com', 'MAT008', 'ALUNO', '88999990008'),
-('8b9c0d1e-2f3a-4345-8e9f-0a1b2c3d4e5f', 'Juliana Castro', '2023-08-14 15:25:30', 'juliana.c@email.com', 'MAT009', 'SERVIDOR', '88999990008'),
-('a0d1e2f3-a4b5-4567-8a9b-0c1d2e3f4a5b', 'Roberto Dias', '2023-09-01 18:05:45', 'roberto.d@email.com', 'MAT010', 'ALUNO', '88999990009'),
-('c2f3a4b5-c6d7-4789-8c9d-0e1f2a3b4c5d', 'Camila Rocha', '2023-09-15 09:15:20', 'camila.r@email.com', 'MAT011', 'ALUNO', '88999990010'),
-('e4a5b6c7-d8e9-4901-8e9f-0a1b2c3d4e5f', 'Felipe Santos', '2022-10-18 08:00:00', 'felipe.s@email.com', 'MAT012', 'PROFESSOR', '88999990011'),
-('0a1b2c3d-4e5f-4123-8a9b-0c1d2e3f4a5b', 'Beatriz Alves', '2023-10-02 14:35:10', 'beatriz.a@email.com', 'MAT013', 'ALUNO', '88999990012'),
-('2c3d4e5f-6a7b-4345-8c9d-0e1f2a3b4c5d', 'Thiago Nunes', '2023-10-10 17:50:55', 'thiago.n@email.com', 'MAT014', 'SERVIDOR', '88999990013'),
-('4e5f6a7b-8c9d-4567-8e9f-0a1b2c3d4e5f', 'Larissa Moura', '2023-11-05 11:11:11', 'larissa.m@email.com', 'MAT015', 'ALUNO', '88999990014');
+('8b9c0d1e-2f3a-4345-8e9f-0a1b2c3d4e5f', 'Juliana Castro', '2023-08-14 15:25:30', 'juliana.c@email.com', 'MAT009', 'SERVIDOR', '88999990009'),
+('a0d1e2f3-a4b5-4567-8a9b-0c1d2e3f4a5b', 'Roberto Dias', '2023-09-01 18:05:45', 'roberto.d@email.com', 'MAT010', 'ALUNO', '889999900010'),
+('c2f3a4b5-c6d7-4789-8c9d-0e1f2a3b4c5d', 'Camila Rocha', '2023-09-15 09:15:20', 'camila.r@email.com', 'MAT011', 'ALUNO', '88999990011'),
+('e4a5b6c7-d8e9-4901-8e9f-0a1b2c3d4e5f', 'Felipe Santos', '2022-10-18 08:00:00', 'felipe.s@email.com', 'MAT012', 'PROFESSOR', '88999990012'),
+('0a1b2c3d-4e5f-4123-8a9b-0c1d2e3f4a5b', 'Beatriz Alves', '2023-10-02 14:35:10', 'beatriz.a@email.com', 'MAT013', 'ALUNO', '88999990013'),
+('2c3d4e5f-6a7b-4345-8c9d-0e1f2a3b4c5d', 'Thiago Nunes', '2023-10-10 17:50:55', 'thiago.n@email.com', 'MAT014', 'SERVIDOR', '88999990014'),
+('4e5f6a7b-8c9d-4567-8e9f-0a1b2c3d4e5f', 'Larissa Moura', '2023-11-05 11:11:11', 'larissa.m@email.com', 'MAT015', 'ALUNO', '88999990015');
 
 INSERT INTO livro (id, titulo, ano_publicacao, id_editora, paginas, id_categoria) VALUES
 ('11a2b3c4-d5e6-4789-8b9c-0d1e2f3a4b5c', 'Código Limpo', '2009-09-08', '4f18d745-0df9-4c48-b9f1-df7413d09204', 291, 'f4b3a2d1-e5c6-4789-9a0b-1c2d3e4f5a6b'),
