@@ -17,7 +17,7 @@ def identificar_emprestimos_atrasados(db: Session = Depends(get_session)):
         .filter(
             Emprestimo.situacao_emprestimo == SituacaoEmprestimo.PENDENTE,
             Emprestimo.data_devolucao_efetiva.is_(None),
-            Emprestimo.data_prazo_devolucao_efetiva < data_atual,
+            Emprestimo.data_prazo_devolucao < data_atual,
         )
         .all()
     )
@@ -44,8 +44,8 @@ def identificar_emprestimos_atrasados(db: Session = Depends(get_session)):
                 "id_emprestimo": emp.id,
                 "id_usuario": emp.id_usuario,
                 "id_exemplar": emp.id_exemplar,
-                "data_prazo": emp.data_prazo_devolucao_efetiva.strftime("%d/%m/%Y"),
-                "dias_atraso": (data_atual - emp.data_prazo_devolucao_efetiva).days,
+                "data_prazo": emp.data_prazo_devolucao.strftime("%d/%m/%Y"),
+                "dias_atraso": (data_atual - emp.data_prazo_devolucao).days,
             }
             for emp in atrasados
         ],
@@ -65,7 +65,7 @@ def calcular_situacao_usuario(id_usuario: str, db: Session = Depends(get_session
         .filter(
             Emprestimo.id_usuario == id_usuario,
             Emprestimo.data_devolucao_efetiva.is_(None),
-            Emprestimo.data_prazo_devolucao_efetiva < data_atual,
+            Emprestimo.data_prazo_devolucao < data_atual,
         )
         .all()
     )
@@ -80,7 +80,7 @@ def calcular_situacao_usuario(id_usuario: str, db: Session = Depends(get_session
         db.commit()
 
     dias_totais_pendentes = sum(
-        (data_atual - emp.data_prazo_devolucao_efetiva).days for emp in atrasos_usuario
+        (data_atual - emp.data_prazo_devolucao).days for emp in atrasos_usuario
     )
 
     situacao_conta = "BLOQUEADO" if atrasos_usuario else "REGULAR"

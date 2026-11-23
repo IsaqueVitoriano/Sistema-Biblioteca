@@ -38,7 +38,7 @@ class EmprestimoEntrada(BaseModel):
     situacao_emprestimo: SituacaoEmprestimo
     data_emprestimo: datetime
     data_devolucao_efetiva: datetime | None = None
-    data_prazo_devolucao_efetiva: datetime | None = None
+    data_prazo_devolucao: datetime
     id_usuario: str
     id_exemplar: str
 
@@ -49,7 +49,7 @@ class EmprestimoSaida(BaseModel):
     situacao_emprestimo: SituacaoEmprestimo
     data_emprestimo: datetime
     data_devolucao_efetiva: datetime | None
-    data_prazo_devolucao_efetiva: datetime | None
+    data_prazo_devolucao: datetime
     id_usuario: str
     id_exemplar: str
 
@@ -134,7 +134,7 @@ class HistoricoEmprestimoSaida(BaseModel):
     situacao_emprestimo: SituacaoEmprestimo
     data_emprestimo: datetime
     data_devolucao_efetiva: datetime | None
-    data_prazo_devolucao_efetiva: datetime | None
+    data_prazo_devolucao: datetime
     id_exemplar: str
     situacao_exemplar: SituacaoExemplar
     id_livro: str
