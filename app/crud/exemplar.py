@@ -5,6 +5,7 @@ from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Exemplar, Livro
 from app.schemas.entidades import ExemplarEntrada
 
+
 def criar_exemplares(dados: ExemplarEntrada, session: Session):
     get_or_404(session, Livro, dados.id_livro)
 
