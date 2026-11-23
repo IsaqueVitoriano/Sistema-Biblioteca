@@ -50,11 +50,11 @@ class Emprestimo(Base):
     data_emprestimo: Mapped[datetime] = mapped_column(comment="Data do emprestimo")
 
     data_devolucao_efetiva: Mapped[datetime | None] = mapped_column(
-        comment="Data efetiva do emprestimo"
+        comment="Data efetiva de devolucao do emprestimo"
     )
 
-    data_prazo_devolucao_efetiva: Mapped[datetime | None] = mapped_column(
-        comment="Data prazo do emprestimo"
+    data_prazo_devolucao: Mapped[datetime] = mapped_column(
+        comment="Data prazo de devolucao do emprestimo"
     )
 
     id_usuario: Mapped[str] = mapped_column(
