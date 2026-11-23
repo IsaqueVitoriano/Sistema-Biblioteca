@@ -117,7 +117,7 @@ INSERT INTO exemplar (id, situacao, id_livro) VALUES
 ('e0b4c5d6-e7f8-4345-8c9d-0e1f2a3b4c5d', 'DISPONIVEL', 'eeb5c6d7-e8f9-4345-8c9d-0e1f2a3b4c5d'),
 ('f0c5d6e7-f8a9-4567-8e9f-0a1b2c3d4e5f', 'EM_EMPRESTIMO', 'ffc6d7e8-f9a0-4567-8e9f-0a1b2c3d4e5f');
 
-INSERT INTO emprestimo (id, situacao_emprestimo, data_emprestimo, data_devolucao_efetiva, data_prazo_devolucao_efetiva, id_usuario, id_exemplar) VALUES
+INSERT INTO emprestimo (id, situacao_emprestimo, data_emprestimo, data_devolucao_efetiva, data_prazo_devolucao, id_usuario, id_exemplar) VALUES
 ('01c1d2e3-f4a5-4789-8b9c-0d1e2f3a4b5c', 'DEVOLVIDO', '2026-10-01 10:00:00', '2026-10-10 14:30:00', '2026-10-15 23:59:59', '8c9d0e1f-2a3b-4789-8b9c-0d1e2f3a4b5c', '10a1b2c3-d4e5-4789-8b9c-0d1e2f3a4b5c'),
 ('02d2e3f4-a5b6-4901-8d9e-0f1a2b3c4d5e', 'DEVOLVIDO', '2026-10-02 11:15:00', '2026-10-09 09:20:00', '2026-10-17 23:59:59', 'a1b2c3d4-e5f6-4901-8d9e-0f1a2b3c4d5e', '20b2c3d4-e5f6-4901-8d9e-0f1a2b3c4d5e'),
 ('03e3f4a5-b6c7-4123-8f1a-2b3c4d5e6f7a', 'DEVOLVIDO', '2026-10-05 14:00:00', '2026-10-18 16:10:00', '2026-10-20 23:59:59', 'c3d4e5f6-a7b8-4123-8f1a-2b3c4d5e6f7a', '30c3d4e5-f6a7-4123-8f1a-2b3c4d5e6f7a'),
