@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.models.models import Base
+from app.database import Base
 
 ModelType = TypeVar("ModelType", bound=Base)
 
