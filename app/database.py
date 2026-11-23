@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DB_PATH = BASE_DIR / "alembic" / "biblioteca.db"
@@ -13,7 +13,8 @@ engine = create_engine(DATABASE_URL, echo=True, connect_args=connect_args)
 
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 
 def create_tables():
