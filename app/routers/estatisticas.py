@@ -7,6 +7,7 @@ from app.crud.estatistica import gerar_estatisticas
 
 router = APIRouter(prefix="/estatisticas", tags=["Estatisticas"])
 
+
 @router.get("/estatisticas", response_model=Estatistica)
 def get_estatisticas(session: Session = Depends(get_session)):
     return gerar_estatisticas(session)

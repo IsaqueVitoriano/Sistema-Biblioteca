@@ -9,7 +9,7 @@ from app.crud.usuario import (
     criar_usuarios,
     atualizar_usuario,
     apagar_usuario,
-    listar_historico_emprestimos_usuario
+    listar_historico_emprestimos_usuario,
 )
 
 router = APIRouter(prefix="/usuarios", tags=["Usuarios"])

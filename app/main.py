@@ -8,7 +8,7 @@ from app.routers import (
     editoras,
     usuarios,
     relatorios,
-    funcionalidadeEspecifica
+    funcionalidadeEspecifica,
 )
 
 app = FastAPI(

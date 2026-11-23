@@ -81,7 +81,7 @@ def listar_historico_emprestimos_usuario(session: Session, usuario_id: str):
                 "situacao_emprestimo": emp.situacao_emprestimo,
                 "data_emprestimo": emp.data_emprestimo,
                 "data_devolucao_efetiva": emp.data_devolucao_efetiva,
-                "data_prazo_devolucao_efetiva": emp.data_prazo_devolucao_efetiva,
+                "data_prazo_devolucao": emp.data_prazo_devolucao,
                 "id_exemplar": exemp.id,
                 "situacao_exemplar": exemp.situacao,
                 "id_livro": liv.id,

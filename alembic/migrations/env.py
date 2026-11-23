@@ -5,6 +5,7 @@ from sqlalchemy import pool
 
 import sys
 from pathlib import Path
+
 diretorio_models = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(diretorio_models))
 from app.models.models import Base

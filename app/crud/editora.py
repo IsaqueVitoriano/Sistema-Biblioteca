@@ -5,6 +5,7 @@ from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Editora
 from app.schemas.entidades import EditoraEntrada
 
+
 def criar_editoras(dados: EditoraEntrada, session: Session):
     editora = Editora(nome=dados.nome)
     session.add(editora)
@@ -36,4 +37,4 @@ def apagar_editora(editora_id: str, session: Session):
 
     session.delete(editora)
     commit_or_conflict(session)
-    return {"mensagem": "Editora apagada com sucesso" }
+    return {"mensagem": "Editora apagada com sucesso"}

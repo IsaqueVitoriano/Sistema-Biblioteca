@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS editora (
 
 CREATE TABLE IF NOT EXISTS categoria (
     id VARCHAR(50) PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL
+    nome VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS autor (
@@ -19,14 +19,16 @@ CREATE TABLE IF NOT EXISTS usuario (
     data_criacao TIMESTAMP NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     matricula VARCHAR(255) NOT NULL UNIQUE,
+    telefone VARCHAR(20) NOT NULL UNIQUE,
     tipo_usuario VARCHAR(20) CHECK (tipo_usuario IN ('SERVIDOR', 'PROFESSOR', 'ALUNO', 'ADMINISTRADOR'))
 );
 
 CREATE TABLE IF NOT EXISTS livro (
     id VARCHAR(50) PRIMARY KEY,
-    titulo VARCHAR(150) NOT NULL,
+    titulo VARCHAR(60) NOT NULL,
     ano_publicacao DATE NOT NULL,
     id_editora VARCHAR(36) NOT NULL,
+    paginas INTEGER NOT NULL,
     id_categoria VARCHAR(36) NOT NULL,
     CONSTRAINT fk_livro_editora FOREIGN KEY (id_editora) REFERENCES editora(id),
     CONSTRAINT fk_livro_categoria FOREIGN KEY (id_categoria) REFERENCES categoria(id)
@@ -54,7 +56,7 @@ CREATE TABLE IF NOT EXISTS emprestimo (
         CHECK (situacao_emprestimo IN ('DEVOLVIDO', 'PENDENTE', 'ATRASADO')),
     data_emprestimo TIMESTAMP NOT NULL,
     data_devolucao_efetiva TIMESTAMP NULL,
-    data_prazo_devolucao_efetiva TIMESTAMP NULL,
+    data_prazo_devolucao TIMESTAMP NOT NULL,
     id_usuario VARCHAR(50) NOT NULL,
     id_exemplar VARCHAR(50) NOT NULL,
     CONSTRAINT fk_emprestimo_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id),
