@@ -2,8 +2,7 @@ from fastapi import APIRouter, Depends, Query
 
 from app.crud.emprestimo import *
 from app.database import get_session
-from app.schemas.entidades import EmprestimoSaida
-from app.schemas.entidades import EmprestimoPaginadoSaida
+from app.schemas.entidades import EmprestimoSaida, EmprestimoPaginadoSaida, RemocaoSaida
 
 router = APIRouter(prefix="/emprestimos", tags=["Empréstimos"])
 
@@ -50,6 +49,6 @@ def criar_emprestimo(
     return criar_emprestimos(novo_emprestimo, session)
 
 
-@router.delete("/{id}", response_model=dict[str, str])
+@router.delete("/{id}", response_model=RemocaoSaida[EmprestimoSaida])
 def deletar_emprestimos_id(id: str, session: Session = Depends(get_session)):
     return apagar_emprestimo(id, session)

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.database import get_session
-from app.schemas.entidades import UsuarioEntrada, UsuarioSaida, HistoricoEmprestimoSaida
+from app.schemas.entidades import UsuarioEntrada, UsuarioSaida, HistoricoEmprestimoSaida, RemocaoSaida
 
 from app.crud.usuario import (
     listar_usuarios,
@@ -39,7 +39,7 @@ def criar_usuario(
     return criar_usuarios(novo_usuario, session)
 
 
-@router.delete("/{id}", response_model=UsuarioSaida)
+@router.delete("/{id}", response_model=RemocaoSaida[UsuarioSaida])
 def remover_usuario(id: str, session: Session = Depends(get_session)):
     return apagar_usuario(id, session)
 

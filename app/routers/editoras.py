@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.crud.editora import *
 from app.database import get_session
-from app.schemas.entidades import EditoraSaida
+from app.schemas.entidades import EditoraSaida, RemocaoSaida
 
 router = APIRouter(prefix="/editoras", tags=["Editoras"])
 
@@ -30,6 +30,6 @@ def criar_editora(
     return criar_editoras(editora_atualizada, session)
 
 
-@router.delete("/{id}", response_model=dict[str, str])
+@router.delete("/{id}", response_model=RemocaoSaida[EditoraSaida])
 def deletar_editora_id(id: str, session: Session = Depends(get_session)):
     return apagar_editora(id, session)

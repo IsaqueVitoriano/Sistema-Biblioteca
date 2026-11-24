@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.crud.exemplar import *
 from app.database import get_session
-from app.schemas.entidades import ExemplarSaida
+from app.schemas.entidades import ExemplarSaida, RemocaoSaida
 
 router = APIRouter(prefix="/exemplares", tags=["Exemplares"])
 
@@ -32,6 +32,6 @@ def criar_exemplar(
     return criar_exemplares(novo_exemplar, session)
 
 
-@router.delete("/{id}", response_model=dict[str, str])
+@router.delete("/{id}", response_model=RemocaoSaida[ExemplarSaida])
 def deletar_exemplar_id(id: str, session: Session = Depends(get_session)):
     return apagar_exemplar(id, session)
