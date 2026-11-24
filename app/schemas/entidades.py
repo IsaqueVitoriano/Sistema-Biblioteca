@@ -59,6 +59,7 @@ class UsuarioEntrada(BaseModel):
     data_criacao: datetime
     email: str = Field(max_length=150)
     matricula: str
+    telefone: str = Field(max_length=20)
     tipo_usuario: TipoUsuario | None = None
 
 
@@ -69,6 +70,7 @@ class UsuarioSaida(BaseModel):
     data_criacao: datetime
     email: str
     matricula: str
+    telefone: str = Field(max_length=20)
     tipo_usuario: TipoUsuario | None
 
 
@@ -150,3 +152,8 @@ class RankingAutorCategoriaSaida(BaseModel):
 class CategoriasComMaisAtrasos(BaseModel):
     nome_categoria: str
     qtd_atrasos: int
+
+
+class RemocaoSaida[T](BaseModel):
+    mensagem: str
+    dados: T
