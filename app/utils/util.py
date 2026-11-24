@@ -26,5 +26,5 @@ def commit_or_conflict(session: Session) -> None:
         session.rollback()
         raise HTTPException(
             status_code=409,
-            detail="A operação viola uma restrição de integridade do banco de dados",
+            detail="A operação viola a restrição de integridade do banco de dados",
         ) from error
