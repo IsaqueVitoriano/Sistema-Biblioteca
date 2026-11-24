@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Categoria, Emprestimo, Exemplar, Livro
-from app.schemas.entidades import CategoriaEntrada
+from app.schemas.entidades import CategoriaEntrada, CategoriaSaida, RemocaoSaida
 
 
 def criar_categoria(dados: CategoriaEntrada, session: Session):
@@ -45,9 +45,13 @@ def atualizar_categoria(categoria_id: str, dados: CategoriaEntrada, session: Ses
 def apagar_categoria(categoria_id: str, session: Session):
     categoria = get_or_404(session, Categoria, categoria_id)
 
+    dados_categoria = CategoriaSaida.model_validate(categoria)
     session.delete(categoria)
     commit_or_conflict(session)
-    return {"mensagem": "Categoria apagada com sucesso"}
+
+    return RemocaoSaida(
+        mensagem="Categoria apagada com sucesso!", dados=dados_categoria
+    )
 
 
 def categoria_com_atrasos(session: Session):

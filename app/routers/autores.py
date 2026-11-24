@@ -9,7 +9,7 @@ from app.crud.autor import (
 )
 
 from app.database import get_session
-from app.schemas.entidades import AutorEntrada, AutorSaida, LivroSaida
+from app.schemas.entidades import AutorEntrada, AutorSaida, LivroSaida, RemocaoSaida
 
 router = APIRouter(prefix="/autores", tags=["Autores"])
 
@@ -36,7 +36,7 @@ def criar_autor(novo_autor: AutorEntrada, session: Session = Depends(get_session
     return criar_autor(novo_autor, session)
 
 
-@router.delete("/{id}", response_model=AutorSaida)
+@router.delete("/{id}", response_model=RemocaoSaida[AutorSaida])
 def remover_autor(id: str, session: Session = Depends(get_session)):
     return apagar_autor(id, session)
 

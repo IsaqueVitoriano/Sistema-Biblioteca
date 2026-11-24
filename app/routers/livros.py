@@ -1,8 +1,13 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from app.schemas.entidades import LivroSaida, LivroEntrada
-from app.schemas.entidades import LivroPaginadoSaida, ExemplarSaida
+from app.schemas.entidades import (
+    LivroSaida,
+    LivroEntrada,
+    LivroPaginadoSaida,
+    ExemplarSaida,
+    RemocaoSaida,
+)
 from app.crud.livro import (
     listar_livros,
     obter_livro,
@@ -54,7 +59,7 @@ def criar_livro(novo_livro: LivroEntrada, session: Session = Depends(get_session
     return criar_livros(novo_livro, session)
 
 
-@router.delete("/{id}", response_model=dict[str, str])
+@router.delete("/{id}", response_model=RemocaoSaida[LivroSaida])
 def deletar_livro_id(id: str, session: Session = Depends(get_session)):
     return apagar_livro(id, session)
 

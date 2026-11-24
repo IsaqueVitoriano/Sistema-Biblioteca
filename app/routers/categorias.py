@@ -7,7 +7,7 @@ from app.crud.categoria import (
 )
 from sqlalchemy.orm import Session
 from app.database import get_session
-from app.schemas.entidades import CategoriaSaida, CategoriaEntrada
+from app.schemas.entidades import CategoriaSaida, CategoriaEntrada, RemocaoSaida
 
 router = APIRouter(prefix="/categorias", tags=["Categorias"])
 
@@ -38,6 +38,6 @@ def criar_categoria(
     return criar_categoria(nova_categoria, session)
 
 
-@router.delete("/{id}", response_model=dict[str, str])
+@router.delete("/{id}", response_model=RemocaoSaida[CategoriaSaida])
 def deletar_categoria_id(id: str, session: Session = Depends(get_session)):
     return apagar_categoria(id, session)

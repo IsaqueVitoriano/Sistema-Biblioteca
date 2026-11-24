@@ -8,7 +8,7 @@ from app.models.models import (
     Usuario,
     SituacaoEmprestimo,
 )
-from app.schemas.entidades import EmprestimoEntrada
+from app.schemas.entidades import EmprestimoEntrada, EmprestimoSaida, RemocaoSaida
 
 
 def validar_fks(session: Session, dados: EmprestimoEntrada) -> None:
@@ -94,6 +94,10 @@ def atualizar_emprestimo(
 def apagar_emprestimo(emprestimo_id: str, session: Session):
     emprestimo = get_or_404(session, Emprestimo, emprestimo_id)
 
+    dados_emprestimo = EmprestimoSaida.model_validate(emprestimo)
     session.delete(emprestimo)
     commit_or_conflict(session)
-    return {"mensagem": "Emprestimo apagado com sucesso"}
+
+    return RemocaoSaida(
+        mensagem="Emprestimo apagado com sucesso!", dados=dados_emprestimo
+    )

@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Usuario
 from app.models.models import Emprestimo, Exemplar, Livro
-from app.schemas.entidades import UsuarioEntrada
+from app.schemas.entidades import UsuarioEntrada, UsuarioSaida, RemocaoSaida
 
 
 def criar_usuarios(dados: UsuarioEntrada, session: Session):
@@ -58,9 +58,11 @@ def atualizar_usuario(usuario_id: str, dados: UsuarioEntrada, session: Session):
 def apagar_usuario(usuario_id: str, session: Session):
     usuario = get_or_404(session, Usuario, usuario_id)
 
+    dados_usuario = UsuarioSaida.model_validate(usuario)
     session.delete(usuario)
     commit_or_conflict(session)
-    return {"mensagem": "Usuario apagado com sucesso"}
+
+    return RemocaoSaida(mensagem="Usuario apagado com sucesso!", dados=dados_usuario)
 
 
 def listar_historico_emprestimos_usuario(session: Session, usuario_id: str):
