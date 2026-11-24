@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Editora
-from app.schemas.entidades import EditoraEntrada
+from app.schemas.entidades import EditoraEntrada, EditoraSaida, RemocaoSaida
 
 
 def criar_editoras(dados: EditoraEntrada, session: Session):
@@ -35,6 +35,8 @@ def atualizar_editora(editora_id: str, dados: EditoraEntrada, session: Session):
 def apagar_editora(editora_id: str, session: Session):
     editora = get_or_404(session, Editora, editora_id)
 
+    dados_editora = EditoraSaida.model_validate(editora)
     session.delete(editora)
     commit_or_conflict(session)
-    return {"mensagem": "Editora apagada com sucesso"}
+
+    return RemocaoSaida(mensagem="Editora apagada com sucesso!", dados=dados_editora)

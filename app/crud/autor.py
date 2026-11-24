@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Autor, Livro, livro_autor, Categoria
-from app.schemas.entidades import AutorEntrada
+from app.schemas.entidades import AutorEntrada, AutorSaida, RemocaoSaida
 
 
 def criar_autor(dados: AutorEntrada, session: Session):
@@ -35,9 +35,11 @@ def atualizar_autor(autor_id: str, dados: AutorEntrada, session: Session):
 def apagar_autor(autor_id: str, session: Session):
     autor = get_or_404(session, Autor, autor_id)
 
+    dados_autor = AutorSaida.model_validate(autor)
     session.delete(autor)
     commit_or_conflict(session)
-    return {"mensagem": "Autor apagado com sucesso"}
+
+    return RemocaoSaida(mensagem="Autor apagado com sucesso!", dados=dados_autor)
 
 
 def listar_livros_por_autor(session: Session, autor_id: str):

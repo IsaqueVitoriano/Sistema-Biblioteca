@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session, selectinload
 
 from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Autor, Categoria, Editora, Livro, Exemplar
-from app.schemas.entidades import LivroEntrada
+from app.schemas.entidades import LivroEntrada, LivroSaida, RemocaoSaida
 
 
 def criar_livros(dados: LivroEntrada, session: Session):
@@ -141,9 +141,11 @@ def atualizar_livro(livro_id: str, dados: LivroEntrada, session: Session):
 def apagar_livro(livro_id: str, session: Session):
     livro = get_or_404(session, Livro, livro_id)
 
+    dados_livro = LivroSaida.model_validate(livro)
     session.delete(livro)
     commit_or_conflict(session)
-    return {"mensagem": "Livro apagado com sucesso!"}
+
+    return RemocaoSaida(mensagem="Livro apagado com sucesso!", dados=dados_livro)
 
 
 def listar_exemplares_por_livros(session: Session, livro_id: str):
