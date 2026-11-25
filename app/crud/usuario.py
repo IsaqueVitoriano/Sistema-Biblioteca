@@ -1,31 +1,14 @@
-from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.utils.util import commit_or_conflict, get_or_404
+from app.utils.util import commit_or_conflict, get_or_404, get_usuario
 from app.models.models import Usuario
 from app.models.models import Emprestimo, Exemplar, Livro
 from app.schemas.entidades import UsuarioEntrada, UsuarioSaida, RemocaoSaida
 
 
 def criar_usuarios(dados: UsuarioEntrada, session: Session):
-    email_existente = session.scalars(
-        select(Usuario.id).where(Usuario.email == dados.email)
-    )
-
-    if email_existente:
-        raise HTTPException(
-            status_code=409, detail="Já existe um usuário com esse e-mail"
-        )
-
-    matricula_existente = session.scalars(
-        select(Usuario.matricula).where(Usuario.matricula == dados.matricula)
-    )
-
-    if matricula_existente:
-        raise HTTPException(
-            status_code=409, detail="Já existe um usuário com essa matricula"
-        )
+    get_usuario(session, dados)
 
     usuario = Usuario(**dados.model_dump())
 
@@ -46,6 +29,7 @@ def obter_usuario(usuario_id: str, session: Session):
 
 def atualizar_usuario(usuario_id: str, dados: UsuarioEntrada, session: Session):
     usuario = get_or_404(session, Usuario, usuario_id)
+    get_usuario(session, dados, exclude_id=usuario_id)
 
     for campo, valor in dados.model_dump().items():
         setattr(usuario, campo, valor)
