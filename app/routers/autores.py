@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.crud.autor import (
     listar_autores,
     obter_autor,
     atualizar_autor,
     apagar_autor,
-    listar_livros_por_autor,
+    listar_livros_por_autor, criar_autor_crud,
 )
 
 from app.database import get_session
@@ -33,7 +33,7 @@ def atualizar_autor_id(
 
 @router.post("/", response_model=AutorSaida)
 def criar_autor(novo_autor: AutorEntrada, session: Session = Depends(get_session)):
-    return criar_autor(novo_autor, session)
+    return criar_autor_crud(novo_autor, session)
 
 
 @router.delete("/{id}", response_model=RemocaoSaida[AutorSaida])
