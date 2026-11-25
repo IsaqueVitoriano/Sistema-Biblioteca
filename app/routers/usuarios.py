@@ -8,6 +8,7 @@ from app.crud.usuario import (
     listar_usuarios,
     criar_usuarios,
     atualizar_usuario,
+    obter_usuario,
     apagar_usuario,
     listar_historico_emprestimos_usuario,
 )
@@ -22,7 +23,7 @@ def listar(session: Session = Depends(get_session)):
 
 @router.get("/{id}", response_model=UsuarioSaida)
 def obter_usuario_id(id: str, session: Session = Depends(get_session)):
-    return obter_usuario_id(id, session)
+    return obter_usuario(id, session)
 
 
 @router.put("/{id}", response_model=UsuarioSaida)

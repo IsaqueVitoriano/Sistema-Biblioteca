@@ -11,7 +11,7 @@ from app.schemas.entidades import UsuarioEntrada, UsuarioSaida, RemocaoSaida
 def criar_usuarios(dados: UsuarioEntrada, session: Session):
     email_existente = session.scalars(
         select(Usuario.id).where(Usuario.email == dados.email)
-    )
+    ).first()
 
     if email_existente:
         raise HTTPException(
@@ -20,7 +20,16 @@ def criar_usuarios(dados: UsuarioEntrada, session: Session):
 
     matricula_existente = session.scalars(
         select(Usuario.matricula).where(Usuario.matricula == dados.matricula)
-    )
+    ).first()
+
+    telefone_existente = session.scalars(
+        select(Usuario.telefone).where(Usuario.telefone == dados.telefone)
+    ).first()
+
+    if telefone_existente:
+        raise HTTPException(
+            status_code=409, detail="Já existe um usuário com esse telefone"
+        )
 
     if matricula_existente:
         raise HTTPException(
