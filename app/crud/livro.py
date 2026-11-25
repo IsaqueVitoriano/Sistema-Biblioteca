@@ -6,14 +6,16 @@ from app.models.models import Autor, Categoria, Editora, Livro, Exemplar
 from app.schemas.entidades import LivroEntrada, LivroSaida, RemocaoSaida
 
 
-def criar_livros(dados: LivroEntrada, session: Session):
+def validar_fks(session: Session, dados: LivroEntrada) -> list[Autor]:
     get_or_404(session, Editora, dados.id_editora)
     get_or_404(session, Categoria, dados.id_categoria)
 
     if dados.id_autores:
-        autores = session.scalars(
-            select(Autor).where(Autor.id.in_(dados.id_autores))
-        ).all()
+        autores = list(
+            session.scalars(select(Autor)
+                    .where(Autor.id.in_(dados.id_autores)))
+                    .all()
+        )
     else:
         autores = []
 
@@ -30,6 +32,12 @@ def criar_livros(dados: LivroEntrada, session: Session):
 
     if id_autor_inexistente is not None:
         get_or_404(session, Autor, id_autor_inexistente)
+
+    return autores
+
+
+def criar_livros(dados: LivroEntrada, session: Session):
+    autores = validar_fks(session, dados)
 
     livro = Livro(
         titulo=dados.titulo,
@@ -102,30 +110,7 @@ def obter_livro(livro_id: str, session: Session):
 
 def atualizar_livro(livro_id: str, dados: LivroEntrada, session: Session):
     livro = get_or_404(session, Livro, livro_id)
-
-    get_or_404(session, Editora, dados.id_editora)
-    get_or_404(session, Categoria, dados.id_categoria)
-
-    autores: list[Autor] = []
-
-    if dados.id_autores:
-        autores = list(
-            session.scalars(select(Autor).where(Autor.id.in_(dados.id_autores))).all()
-        )
-
-    autores_encontrados = {autor.id for autor in autores}
-
-    autor_inexistente = next(
-        (
-            autor_id
-            for autor_id in dados.id_autores
-            if autor_id not in autores_encontrados
-        ),
-        None,
-    )
-
-    if autor_inexistente is not None:
-        get_or_404(session, Autor, autor_inexistente)
+    autores = validar_fks(session, dados)
 
     livro.titulo = dados.titulo
     livro.ano_publicacao = dados.ano_publicacao
