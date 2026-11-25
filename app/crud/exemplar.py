@@ -6,8 +6,12 @@ from app.models.models import Exemplar, Livro
 from app.schemas.entidades import ExemplarEntrada, ExemplarSaida, RemocaoSaida
 
 
-def criar_exemplares(dados: ExemplarEntrada, session: Session):
+def validar_fks(session: Session, dados: ExemplarEntrada) -> None:
     get_or_404(session, Livro, dados.id_livro)
+
+
+def criar_exemplares(dados: ExemplarEntrada, session: Session):
+    validar_fks(session, dados)
 
     exemplar = Exemplar(**dados.model_dump())
 
@@ -27,7 +31,7 @@ def obter_exemplar(exemplar_id: str, session: Session):
 
 def atualizar_exemplar(exemplar_id: str, dados: ExemplarEntrada, session: Session):
     exemplar = get_or_404(session, Exemplar, exemplar_id)
-    get_or_404(session, Livro, dados.id_livro)
+    validar_fks(session, dados)
 
     exemplar.situacao = dados.situacao
     exemplar.id_livro = dados.id_livro
