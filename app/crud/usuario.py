@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -37,6 +39,7 @@ def criar_usuarios(dados: UsuarioEntrada, session: Session):
         )
 
     usuario = Usuario(**dados.model_dump())
+    usuario.data_criacao = datetime.now()
 
     session.add(usuario)
     commit_or_conflict(session)

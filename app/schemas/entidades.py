@@ -56,7 +56,6 @@ class EmprestimoSaida(BaseModel):
 
 class UsuarioEntrada(BaseModel):
     nome: str = Field(max_length=100)
-    data_criacao: datetime
     email: str = Field(max_length=150)
     matricula: str
     telefone: str = Field(max_length=20)
