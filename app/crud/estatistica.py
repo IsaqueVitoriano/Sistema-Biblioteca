@@ -21,7 +21,7 @@ def gerar_estatisticas(session: Session) -> Estatistica:
 def gerar_qtd_livro_categoria(session: Session):  # count + group by
     registros = (
         session.query(Categoria.nome, func.count(Livro.id))
-        .join(Livro.id_categoria)
+        .join(Livro, Categoria.id == Livro.id_categoria)
         .group_by(Categoria.nome)
         .all()
     )
@@ -32,40 +32,48 @@ def gerar_qtd_livro_categoria(session: Session):  # count + group by
 def gerar_qtd_exemplar_situacao(session: Session):  # count + group by
     registros = (
         session.query(Exemplar.situacao, func.count(Exemplar.id))
-        .group_by(str(SituacaoExemplar))
+        .group_by(Exemplar.situacao)
         .all()
     )
 
-    return {str(situacao): total for situacao, total in registros}
+    return {
+        situacao.value: total
+        for situacao, total in registros
+    }
 
 
 def gerar_tempo_medio_emprestimo(session: Session):  # avg
-    tempo_medio_dias = session.query(
-        func.avg(Emprestimo.data_devolucao_efetiva - Emprestimo.data_emprestimo),
-    ).scalar()
+    emprestimos = session.query(
+        Emprestimo.data_emprestimo,
+        Emprestimo.data_devolucao_efetiva,
+    ).filter(Emprestimo.data_devolucao_efetiva.isnot(None)).all()
 
-    if not tempo_medio_dias:
+    if not emprestimos:
         return 0
 
-    return float(tempo_medio_dias)
+    tempos = [
+        (data_devolucao - data_emprestimo).total_seconds() / 86400
+        for data_emprestimo, data_devolucao in emprestimos
+    ]
+    return sum(tempos) / len(tempos)
 
 
 def gerar_data_primeiro_emprestimo(session: Session):  # min
-    return session.query(
+    valor = session.query(
         func.min(Emprestimo.data_emprestimo),
     ).scalar()
-
+    return valor.date() if valor is not None else None
 
 def gerar_data_ultimo_emprestimo(session: Session):  # max
-    return session.query(
+    valor = session.query(
         func.max(Emprestimo.data_emprestimo),
     ).scalar()
-
+    return valor.date() if valor is not None else None
 
 def gerar_total_paginas_categoria(session: Session):  # sum
     registros = (
         session.query(Categoria.nome, func.sum(Livro.paginas))
-        .join(Livro.id_categoria)
+        .join(Livro, Categoria.id == Livro.id_categoria)
         .group_by(Categoria.nome)
         .all()
     )

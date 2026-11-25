@@ -7,8 +7,8 @@ class Estatistica(BaseModel):
     qtd_livro_categoria: dict[str, int]
     qtd_exemplar_situacao: dict[str, int]
     tempo_medio_emprestimo: float
-    data_primeiro_emprestimo: date
-    data_ultimo_emprestimo: date
+    data_primeiro_emprestimo: date | None
+    data_ultimo_emprestimo: date | None
     tot_paginas_categoria: dict[str, int]
 
 
