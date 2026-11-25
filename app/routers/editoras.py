@@ -12,8 +12,8 @@ def listar(session: Session = Depends(get_session)):
 
 
 @router.get("/{id}", response_model=EditoraSaida)
-def obter_editora_id(editora_id: str, session: Session = Depends(get_session)):
-    return obter_editora(editora_id, session)
+def obter_editora_id(id: str, session: Session = Depends(get_session)):
+    return obter_editora(id, session)
 
 
 @router.put("/{id}", response_model=EditoraSaida)
