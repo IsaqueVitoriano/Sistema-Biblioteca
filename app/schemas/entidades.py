@@ -23,7 +23,7 @@ class AutorSaida(BaseModel):
 
 
 class ExemplarEntrada(BaseModel):
-    situacao: SituacaoExemplar
+    situacao: SituacaoExemplar = SituacaoExemplar.DISPONIVEL
     id_livro: str
 
 
@@ -35,7 +35,7 @@ class ExemplarSaida(BaseModel):
 
 
 class EmprestimoEntrada(BaseModel):
-    situacao_emprestimo: SituacaoEmprestimo
+    situacao_emprestimo: SituacaoEmprestimo = SituacaoEmprestimo.PENDENTE
     data_emprestimo: datetime
     data_devolucao_efetiva: datetime | None = None
     data_prazo_devolucao: datetime
@@ -60,6 +60,14 @@ class UsuarioEntrada(BaseModel):
     email: str = Field(max_length=150)
     matricula: str
     telefone: str = Field(max_length=20)
+    tipo_usuario: TipoUsuario | None = None
+
+
+class UsuarioAtualizacao(BaseModel):
+    nome: str | None = Field(default=None, max_length=100)
+    email: str | None = Field(default=None, max_length=150)
+    matricula: str | None = None
+    telefone: str | None = Field(default=None, max_length=20)
     tipo_usuario: TipoUsuario | None = None
 
 

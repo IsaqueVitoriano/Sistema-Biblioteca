@@ -6,7 +6,7 @@ from app.models.models import Autor, Livro, livro_autor, Categoria
 from app.schemas.entidades import AutorEntrada, AutorSaida, RemocaoSaida
 
 
-def criar_autor(dados: AutorEntrada, session: Session):
+def criar_autor_crud(dados: AutorEntrada, session: Session):
     autor = Autor(nome=dados.nome)
 
     session.add(autor)

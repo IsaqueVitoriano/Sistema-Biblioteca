@@ -10,12 +10,12 @@ router = APIRouter(prefix="/relatorios", tags=["Relatorios"])
 
 
 @router.get(
-    "/ranking-autores-categorias", response_model=list[RankingAutorCategoriaSaida]
+    "/obras-autores-categorias", response_model=list[RankingAutorCategoriaSaida]
 )
-def buscar_autor_por_categoria(session: Session = Depends(get_session)):
+def ranking_autor_por_categoria(session: Session = Depends(get_session)):
     return livros_por_categoria(session)
 
 
-@router.get("/atrasos-categoria", response_model=list[CategoriasComMaisAtrasos])
-def buscar_atrasos_por_categoria(session: Session = Depends(get_session)):
+@router.get("/atrasos-categorias", response_model=list[CategoriasComMaisAtrasos])
+def ranking_atrasos_por_categoria(session: Session = Depends(get_session)):
     return categoria_com_atrasos(session)

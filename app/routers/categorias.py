@@ -3,7 +3,7 @@ from app.crud.categoria import (
     listar_categorias,
     atualizar_categoria,
     obter_categoria,
-    apagar_categoria,
+    apagar_categoria, criar_categorias,
 )
 from sqlalchemy.orm import Session
 from app.database import get_session
@@ -35,7 +35,7 @@ def atualizar_categoria_id(
 def criar_categoria(
     nova_categoria: CategoriaEntrada, session: Session = Depends(get_session)
 ):
-    return criar_categoria(nova_categoria, session)
+    return criar_categorias(nova_categoria, session)
 
 
 @router.delete("/{id}", response_model=RemocaoSaida[CategoriaSaida])

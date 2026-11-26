@@ -1,23 +1,15 @@
-from fastapi import HTTPException
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
-from app.utils.util import commit_or_conflict, get_or_404
+from app.utils.util import commit_or_conflict, get_or_404, get_categoria
 from app.models.models import Categoria, Emprestimo, Exemplar, Livro
 from app.schemas.entidades import CategoriaEntrada, CategoriaSaida, RemocaoSaida
 
 
-def criar_categoria(dados: CategoriaEntrada, session: Session):
+def criar_categorias(dados: CategoriaEntrada, session: Session):
+    get_categoria(session, dados)
+
     categoria = Categoria(nome=dados.nome)
-
-    categoria_existe = session.scalars(
-        select(Categoria.nome).where(Categoria.nome == dados.nome)
-    )
-
-    if categoria_existe:
-        raise HTTPException(
-            status_code=409, detail="Já existe uma categoria com esse nome"
-        )
 
     session.add(categoria)
     commit_or_conflict(session)
@@ -35,6 +27,7 @@ def obter_categoria(categoria_id: str, session: Session):
 
 def atualizar_categoria(categoria_id: str, dados: CategoriaEntrada, session: Session):
     categoria = get_or_404(session, Categoria, categoria_id)
+    get_categoria(session, dados, exclude_id=categoria_id)
     categoria.nome = dados.nome
 
     commit_or_conflict(session)
@@ -64,7 +57,7 @@ def categoria_com_atrasos(session: Session):
             .where(Emprestimo.situacao_emprestimo == "ATRASADO")
         )
         .group_by(Categoria.nome)
-        .order_by(func.count(Emprestimo.id).desc())
+        .order_by(func.count(Emprestimo.id).desc(), Categoria.nome)
     )
 
     resultados = session.execute(consulta_complexa).all()

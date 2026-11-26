@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -5,13 +7,18 @@ from sqlalchemy.orm import Session
 from app.utils.util import commit_or_conflict, get_or_404
 from app.models.models import Usuario
 from app.models.models import Emprestimo, Exemplar, Livro
-from app.schemas.entidades import UsuarioEntrada, UsuarioSaida, RemocaoSaida
+from app.schemas.entidades import (
+    UsuarioAtualizacao,
+    UsuarioEntrada,
+    UsuarioSaida,
+    RemocaoSaida,
+)
 
 
 def criar_usuarios(dados: UsuarioEntrada, session: Session):
     email_existente = session.scalars(
         select(Usuario.id).where(Usuario.email == dados.email)
-    )
+    ).first()
 
     if email_existente:
         raise HTTPException(
@@ -20,7 +27,16 @@ def criar_usuarios(dados: UsuarioEntrada, session: Session):
 
     matricula_existente = session.scalars(
         select(Usuario.matricula).where(Usuario.matricula == dados.matricula)
-    )
+    ).first()
+
+    telefone_existente = session.scalars(
+        select(Usuario.telefone).where(Usuario.telefone == dados.telefone)
+    ).first()
+
+    if telefone_existente:
+        raise HTTPException(
+            status_code=409, detail="Já existe um usuário com esse telefone"
+        )
 
     if matricula_existente:
         raise HTTPException(
@@ -28,6 +44,7 @@ def criar_usuarios(dados: UsuarioEntrada, session: Session):
         )
 
     usuario = Usuario(**dados.model_dump())
+    usuario.data_criacao = datetime.now().replace(microsecond=0)
 
     session.add(usuario)
     commit_or_conflict(session)
@@ -44,10 +61,14 @@ def obter_usuario(usuario_id: str, session: Session):
     return get_or_404(session, Usuario, usuario_id)
 
 
-def atualizar_usuario(usuario_id: str, dados: UsuarioEntrada, session: Session):
+def atualizar_usuario(
+    usuario_id: str,
+    dados: UsuarioAtualizacao,
+    session: Session,
+):
     usuario = get_or_404(session, Usuario, usuario_id)
 
-    for campo, valor in dados.model_dump().items():
+    for campo, valor in dados.model_dump(exclude_unset=True).items():
         setattr(usuario, campo, valor)
 
     commit_or_conflict(session)

@@ -11,9 +11,9 @@ def criar_livros(dados: LivroEntrada, session: Session):
     get_or_404(session, Categoria, dados.id_categoria)
 
     if dados.id_autores:
-        autores = session.scalars(
-            select(Autor).where(Autor.id.in_(dados.id_autores))
-        ).all()
+        autores = list(
+            session.scalars(select(Autor).where(Autor.id.in_(dados.id_autores))).all()
+        )
     else:
         autores = []
 
@@ -42,7 +42,6 @@ def criar_livros(dados: LivroEntrada, session: Session):
 
     session.add(livro)
     commit_or_conflict(session)
-    session.refresh(livro)
     return livro
 
 
@@ -130,16 +129,20 @@ def atualizar_livro(livro_id: str, dados: LivroEntrada, session: Session):
     livro.titulo = dados.titulo
     livro.ano_publicacao = dados.ano_publicacao
     livro.id_editora = dados.id_editora
+    livro.paginas = dados.numero_paginas
     livro.id_categoria = dados.id_categoria
     livro.autores = autores
 
     commit_or_conflict(session)
-    session.refresh(livro)
-    return livro
+    return obter_livro(livro.id, session)
 
 
 def apagar_livro(livro_id: str, session: Session):
-    livro = get_or_404(session, Livro, livro_id)
+    livro = session.scalar(
+        select(Livro).where(Livro.id == livro_id).options(selectinload(Livro.autores))
+    )
+    if livro is None:
+        livro = get_or_404(session, Livro, livro_id)
 
     dados_livro = LivroSaida.model_validate(livro)
     session.delete(livro)

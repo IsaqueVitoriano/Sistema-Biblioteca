@@ -18,7 +18,6 @@ def validar_fks(session: Session, dados: EmprestimoEntrada) -> None:
 
 def criar_emprestimos(dados: EmprestimoEntrada, session: Session):
     validar_fks(session, dados)
-
     emprestimo = Emprestimo(**dados.model_dump())
 
     session.add(emprestimo)

@@ -1,4 +1,5 @@
-from sqlalchemy import select
+from fastapi import HTTPException
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
 from app.utils.util import commit_or_conflict, get_or_404
@@ -7,7 +8,17 @@ from app.schemas.entidades import EditoraEntrada, EditoraSaida, RemocaoSaida
 
 
 def criar_editoras(dados: EditoraEntrada, session: Session):
-    editora = Editora(nome=dados.nome)
+    nome_limpo = dados.nome.strip()
+    editora_existente = session.scalars(
+        select(Editora.id).where(func.lower(Editora.nome) == nome_limpo.lower())
+    ).first()
+
+    if editora_existente:
+        raise HTTPException(
+            status_code=409, detail="Já existe uma editora com esse nome"
+        )
+
+    editora = Editora(nome=nome_limpo)
     session.add(editora)
 
     commit_or_conflict(session)
@@ -25,7 +36,21 @@ def obter_editora(editora_id: str, session: Session):
 
 def atualizar_editora(editora_id: str, dados: EditoraEntrada, session: Session):
     editora = get_or_404(session, Editora, editora_id)
-    editora.nome = dados.nome
+    nome_limpo = dados.nome.strip()
+
+    editora_existente = session.scalars(
+        select(Editora.id).where(
+            func.lower(Editora.nome) == nome_limpo.lower(),
+            Editora.id != editora_id,
+        )
+    ).first()
+
+    if editora_existente:
+        raise HTTPException(
+            status_code=409, detail="Já existe outra editora com esse nome"
+        )
+
+    editora.nome = nome_limpo
 
     commit_or_conflict(session)
     session.refresh(editora)

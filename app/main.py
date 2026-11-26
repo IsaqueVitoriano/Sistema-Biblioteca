@@ -5,6 +5,7 @@ from app.routers import (
     categorias,
     autores,
     exemplares,
+    estatisticas,
     editoras,
     usuarios,
     relatorios,
@@ -22,6 +23,7 @@ app.include_router(emprestimos.router)
 app.include_router(categorias.router)
 app.include_router(autores.router)
 app.include_router(exemplares.router)
+app.include_router(estatisticas.router)
 app.include_router(usuarios.router)
 app.include_router(editoras.router)
 app.include_router(relatorios.router)
