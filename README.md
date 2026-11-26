@@ -6,8 +6,6 @@ API REST para administrar o acervo e as operações de uma biblioteca: livros, e
 [![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-D71F00)](https://www.sqlalchemy.org/)
 
-> **Escopo:** o repositório inclui a API, mas não uma interface web.
-
 <p align="center">
   <a href="#-começar">Começar</a> ·
   <a href="#-recursos">Recursos</a> ·
