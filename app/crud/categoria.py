@@ -6,7 +6,7 @@ from app.models.models import Categoria, Emprestimo, Exemplar, Livro
 from app.schemas.entidades import CategoriaEntrada, CategoriaSaida, RemocaoSaida
 
 
-def criar_categoria(dados: CategoriaEntrada, session: Session):
+def criar_categorias(dados: CategoriaEntrada, session: Session):
     get_categoria(session, dados)
 
     categoria = Categoria(nome=dados.nome)
