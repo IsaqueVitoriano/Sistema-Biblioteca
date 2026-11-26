@@ -7,6 +7,16 @@ API REST para administrar o acervo e as operações de uma biblioteca.
 
 **Integrantes:** José Mayson, Matheus Eugênio e Isaque Abraão.
 
+<p align="center">
+  <a href="#tecnologias-utilizadas">Tecnologias</a> ·
+  <a href="#instalação-e-configuração">Instalação</a> ·
+  <a href="#-api">Endpoints</a> ·
+  <a href="#entidades-relacionamentos-e-diagrama">Modelo de dados</a> ·
+  <a href="#regras-de-negócio">Regras de negócio</a> ·
+  <a href="#funcionalidade-específica-do-tema">Funcionalidades</a> ·
+  <a href="#consultas-simples-e-complexas">Consultas e filtros</a>
+</p>
+
 ## Tecnologias utilizadas
 
 - **Python 3.12+**
