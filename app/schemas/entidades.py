@@ -62,6 +62,14 @@ class UsuarioEntrada(BaseModel):
     tipo_usuario: TipoUsuario | None = None
 
 
+class UsuarioAtualizacao(BaseModel):
+    nome: str | None = Field(default=None, max_length=100)
+    email: str | None = Field(default=None, max_length=150)
+    matricula: str | None = None
+    telefone: str | None = Field(default=None, max_length=20)
+    tipo_usuario: TipoUsuario | None = None
+
+
 class UsuarioSaida(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: str
