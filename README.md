@@ -1,71 +1,69 @@
 # Sistema de Biblioteca
 
-API REST para administrar o acervo e as operações de uma biblioteca: livros, exemplares, leitores, empréstimos e relatórios. A aplicação foi construída com **FastAPI**, **SQLAlchemy** e **Pydantic**, com persistência relacional e documentação OpenAPI interativa.
+API REST para administrar o acervo e as operações de uma biblioteca.
 
-[![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-D71F00)](https://www.sqlalchemy.org/)
+**Tema recebido:** sistema de biblioteca com gestão de acervo e circulação de exemplares.  
+**Objetivo:** centralizar os cadastros, acompanhar empréstimos e atrasos e disponibilizar consultas e indicadores para apoiar a administração da biblioteca.
 
-<p align="center">
-  <a href="#-começar">Começar</a> ·
-  <a href="#-recursos">Recursos</a> ·
-  <a href="#-api">API</a> ·
-  <a href="#-modelo-de-dados">Modelo de dados</a> ·
-  <a href="#-estrutura">Estrutura</a>
-</p>
+**Integrantes:** José Mayson, Matheus Eugênio e Isaque Abraão.
 
-## 🧰 Recursos
+## Tecnologias utilizadas
 
-- Cadastro, consulta, atualização e remoção de livros, exemplares, usuários, autores, editoras, categorias e empréstimos.
-- Pesquisa de livros por título, categoria, editora e ano de publicação.
-- Paginação para listagens de livros e empréstimos.
-- Consulta de empréstimos por usuário e histórico de circulação de exemplares.
-- Identificação de empréstimos vencidos e consulta da situação de um usuário.
-- Estatísticas do acervo e relatórios por categoria.
-- Validação de entrada e documentação interativa gerada pelo FastAPI.
+- **Python 3.12+**
+- **FastAPI** para a API e documentação OpenAPI.
+- **Pydantic** para validação e serialização.
+- **SQLAlchemy** para persistência relacional.
+- **SQLite** como banco de dados.
+- **Alembic** para migrações.
 
-## 🚀 Começar
+## Instalação e configuração
 
-### Requisitos
-
-- Python 3.12 ou superior.
-- `pip`.
-
-### Instalar dependências e executar
-
-Na raiz do projeto:
+### Criar o ambiente e instalar dependências
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-uvicorn app.main:app --reload
+python -m pip install alembic
 ```
 
-O servidor fica disponível em <http://127.0.0.1:8000>.
+O banco usado pela aplicação é SQLite, localizado por padrão em `alembic/biblioteca.db`. A API não cria o esquema automaticamente. O arquivo `scripts/schema.sql` contém a definição do esquema para configuração manual.
 
-> **Banco de dados:** a aplicação usa SQLite em `alembic/biblioteca.db` por padrão. O esquema não é criado ao iniciar a API. Em uma base nova, aplique `scripts/schema.sql` antes de usar os endpoints. O arquivo `scripts/seed.sql` contém dados de exemplo. Execute `python scripts/povoar_banco.py` uma vez para carregá-los no banco configurado.
+### Configurar SQLite
 
-### Configurar outro banco
-
-Defina `DATABASE_URL` com uma URL SQLAlchemy antes de iniciar a aplicação. Por exemplo, no PowerShell:
+SQLite não exige um servidor separado. Para usar outro arquivo, defina `DATABASE_URL` no PowerShell:
 
 ```powershell
 $env:DATABASE_URL = "sqlite:///C:/caminho/para/biblioteca.db"
+```
+
+`DATABASE_URL` altera o banco usado pela aplicação. Sem essa variável, ela usa `alembic/biblioteca.db`. O Alembic não lê essa variável.
+
+### Executar migrações
+
+Execute na raiz do projeto:
+
+```powershell
+alembic -c alembic/alembic.ini upgrade head
+```
+
+O Alembic usa a URL configurada em `alembic/alembic.ini`, atualmente `sqlite:///./biblioteca.db`. Esse caminho é relativo ao diretório em que o comando é executado e, portanto, não corresponde ao caminho padrão do banco usado pela aplicação (`alembic/biblioteca.db`). As migrações não acompanham automaticamente a variável `DATABASE_URL`.
+
+### Carregar dados de exemplo
+
+Depois de criar o esquema, carregue os dados uma única vez em um banco SQLite vazio:
+
+```powershell
+python scripts/povoar_banco.py
+```
+
+### Executar a aplicação
+
+```powershell
 uvicorn app.main:app --reload
 ```
 
-Para outros bancos, instale também o driver Python correspondente à URL utilizada.
-
-## 📚 Documentação interativa
-
-Com o servidor em execução:
-
-- **Swagger UI:** <http://127.0.0.1:8000/docs>
-- **ReDoc:** <http://127.0.0.1:8000/redoc>
-- **Especificação OpenAPI:** <http://127.0.0.1:8000/openapi.json>
-
-Os schemas da API estão em `app/schemas/entidades.py`. A documentação OpenAPI é gerada a partir das rotas e dos schemas.
+O servidor fica disponível em <http://127.0.0.1:8000>. A documentação interativa da API fica em <http://127.0.0.1:8000/docs>.
 
 ## 🔌 API
 
@@ -104,20 +102,9 @@ Rotas relacionadas:
 | `GET` | `/emprestimos/vencidos/` | Identifica e lista empréstimos em atraso. |
 | `GET` | `/usuarios/{id_usuario}/situacao` | Consulta a situação da conta do usuário e seus atrasos. |
 
-Na listagem, `page` começa em `1` e `page_size` aceita valores de `1` a `100`. Empréstimos também podem ser filtrados por `id_usuario`, `id_exemplar` e `situacao_emprestimo`.
+Na listagem, `page` começa em `1` e `page_size` aceita valores de `1` a `100`. Livros aceitam filtros por `titulo`, `id_categoria`, `id_editora` e `ano_publicacao`. Empréstimos aceitam filtros por `id_usuario`, `id_exemplar` e `situacao_emprestimo`.
 
 </details>
-
-### ⚠️ Exclusões e relacionamentos
-
-As rotas `DELETE` não apagam automaticamente os registros dependentes. Como as chaves estrangeiras protegem os relacionamentos, exclua primeiro os registros que apontam para o item desejado e só depois o registro principal:
-
-1. **Empréstimos** (`DELETE /emprestimos/{id}`): remova os empréstimos associados antes de excluir o usuário ou exemplar.
-2. **Exemplares** (`DELETE /exemplares/{id}`): depois de remover seus empréstimos, exclua os exemplares antes do livro ao qual pertencem.
-3. **Livros** (`DELETE /livros/{id}`): depois de remover seus exemplares, exclua o livro antes da editora ou categoria associada.
-4. **Editoras e categorias** (`DELETE /editoras/{id}` e `DELETE /categorias/{id}`): só podem ser removidas quando nenhum livro as referencia.
-
-Autores se relacionam a livros pela tabela `livro_autor`. Ao excluir um autor, o vínculo com as obras é removido, mas os livros permanecem. Se uma exclusão violar uma chave estrangeira ou outra restrição de integridade, a API responde com **HTTP 409 Conflict**. Excluir empréstimos também apaga o histórico. Para preservá-lo, mantenha os empréstimos, os usuários e os exemplares relacionados.
 
 <details>
 <summary><strong>Estatísticas e relatórios</strong></summary>
@@ -125,69 +112,86 @@ Autores se relacionam a livros pela tabela `livro_autor`. Ao excluir um autor, o
 | Método | Rota | Descrição |
 |---|---|---|
 | `GET` | `/estatisticas/estatisticas` | Indicadores de acervo, empréstimos e páginas por categoria. |
-| `GET` | `/relatorios/obras-autores-categorias` | Obras agrupadas por autor e categoria. |
-| `GET` | `/relatorios/atrasos-categorias` | Quantidade de atrasos por categoria. |
+| `GET` | `/relatorios/obras-autores-categorias` | Ranking da quantidade de obras por autor e categoria. |
+| `GET` | `/relatorios/atrasos-categorias` | Quantidade de empréstimos atrasados por categoria. |
 
 </details>
 
-### Exemplos rápidos
-
-Listar livros, filtrando por título e usando paginação:
-
-```http
-GET /livros/?titulo=Clean&page=1&page_size=10
-```
-
-Criar um livro (os IDs de editora, categoria e autores devem existir):
-
-```json
-{
-  "titulo": "Exemplo de título",
-  "ano_publicacao": "2024-01-01",
-  "id_editora": "<id-da-editora>",
-  "id_categoria": "<id-da-categoria>",
-  "id_autores": [],
-  "numero_paginas": 240
-}
-```
-
-Os estados usados pela API são:
-
-- **Empréstimo:** `PENDENTE`, `DEVOLVIDO`, `ATRASADO`.
-- **Exemplar:** `DISPONIVEL`, `DANIFICADO`, `EM_EMPRESTIMO`, `RETIRADO_DE_CIRCULACAO`.
-- **Usuário:** `SERVIDOR`, `PROFESSOR`, `ALUNO`, `ADMINISTRADOR`.
-
-## 🧩 Modelo de dados
+## Entidades, relacionamentos e diagrama
 
 ![Diagrama original do esquema relacional do banco de dados](docs/images/esquema-relacional.png)
 
-## 🏗️ Estrutura
+### Entidades e relacionamentos
 
-```text
-app/
-├── main.py              # Criação da aplicação e registro das rotas
-├── database.py          # Engine, sessões e configuração do banco
-├── models/              # Entidades SQLAlchemy
-├── schemas/             # Schemas Pydantic de entrada e saída
-├── routers/             # Endpoints da API
-├── crud/                # Operações de persistência
-├── services/            # Regras de negócio
-└── utils/               # Utilitários compartilhados
-alembic/
-├── alembic.ini
-└── migrations/          # Configuração e versões de migração
-scripts/
-├── schema.sql           # Definição SQL do esquema
-├── seed.sql             # Dados de exemplo
-└── povoar_banco.py      # Carregamento do seed
-requirements.txt
-```
+| Entidade | Responsabilidade e relações |
+|---|---|
+| **Usuário** | Representa quem pode realizar empréstimos. Armazena nome, data de cadastro, e-mail, matrícula, telefone e tipo (`ALUNO`, `PROFESSOR`, `SERVIDOR` ou `ADMINISTRADOR`). E-mail, matrícula e telefone são únicos. Um usuário pode ter vários empréstimos. |
+| **Empréstimo** | Registra a circulação de um exemplar por um usuário. Guarda as datas do empréstimo, do prazo de devolução e, quando informado, da devolução efetiva, além da situação (`PENDENTE`, `DEVOLVIDO` ou `ATRASADO`). Cada registro referencia exatamente um usuário e um exemplar. |
+| **Exemplar** | Representa uma cópia física disponível no acervo. Está associado a um livro e possui uma situação (`DISPONIVEL`, `DANIFICADO`, `EM_EMPRESTIMO` ou `RETIRADO_DE_CIRCULACAO`). Um exemplar pode estar relacionado a vários registros de empréstimo ao longo do tempo. |
+| **Livro** | Descreve uma obra pelo título, ano de publicação e número de páginas. Cada livro referencia uma editora e uma categoria, pode ter vários autores e pode possuir vários exemplares. |
+| **Autor** | Guarda o nome de quem escreveu uma ou mais obras. A relação com livros é muitos-para-muitos e fica registrada na tabela de associação `livro_autor`. |
+| **Editora** | Guarda o nome da editora responsável pela publicação. Uma editora pode estar associada a vários livros. |
+| **Categoria** | Classifica os livros por assunto. O nome da categoria é único e uma categoria pode agrupar vários livros. |
 
-## 🛠 Tecnologias
+## Regras de negócio
 
-- **FastAPI** — framework da API e documentação OpenAPI.
-- **Pydantic** — validação e serialização de dados.
-- **SQLAlchemy** — mapeamento objeto-relacional e acesso ao banco.
-- **SQLite** — banco configurado por padrão.
-- **Alembic** — arquivos e configuração de migrações presentes no projeto.
+- Um empréstimo deve referenciar um usuário e um exemplar existentes.
+- A camada de serviços define validações de disponibilidade do exemplar e do período de devolução. Essas validações ainda não são chamadas pelo endpoint de criação, que verifica a existência do usuário e do exemplar.
+- As rotas `DELETE` não apagam automaticamente os registros dependentes. Remova empréstimos antes de usuários ou exemplares, exemplares antes de livros e livros antes de editoras ou categorias. Ao excluir um autor, o vínculo em `livro_autor` é removido sem apagar os livros. Violações de chaves estrangeiras retornam **HTTP 409 Conflict**. Excluir empréstimos também apaga o histórico de circulação.
+
+## Funcionalidade específica do tema
+
+- `GET /emprestimos/vencidos/` procura empréstimos pendentes, ainda sem devolução efetiva e com prazo anterior à data atual. Atualiza esses registros para `ATRASADO` e retorna o total e os empréstimos atrasados:
+
+  ```json
+  {
+    "total_atrasados": 1,
+    "emprestimos": [
+      {
+        "id_emprestimo": "id-do-emprestimo",
+        "id_usuario": "id-do-usuario",
+        "id_exemplar": "id-do-exemplar",
+        "data_prazo": "15/11/2026",
+        "dias_atraso": 11
+      }
+    ]
+  }
+  ```
+
+- `GET /usuarios/{id_usuario}/situacao` recebe o ID do usuário na URL. Conta os empréstimos sem devolução efetiva cujo prazo já passou, atualiza a situação para `ATRASADO` e retorna a situação da conta:
+
+  ```json
+  {
+    "id_usuario": "id-do-usuario",
+    "nome": "Nome do usuário",
+    "tipo_usuario": "ALUNO",
+    "situacao_conta": "BLOQUEADO",
+    "livros_em_atraso": 1,
+    "dias_totais_de_atraso_acumulados": 11
+  }
+  ```
+
+- `GET /estatisticas/estatisticas` retorna quantidade de livros por categoria, quantidade de exemplares por situação, tempo médio dos empréstimos devolvidos, datas do primeiro e do último empréstimo e total de páginas por categoria.
+- Os relatórios apresentam o ranking de quantidade de obras de cada autor por categoria e a quantidade de empréstimos em atraso por categoria.
+
+## Consultas simples e complexas
+
+### Consultas simples
+
+- As operações CRUD e as buscas por ID dos recursos **editoras**, **usuários**, **livros**, **autores**, **categorias**, **empréstimos** e **exemplares**.
+- `GET /estatisticas/estatisticas` — consulta os indicadores do acervo e dos empréstimos.
+- `GET /usuarios/{usuario_id}/emprestimos` — consulta o histórico de empréstimos de um usuário.
+- `GET /autores/{autor_id}/livros` — lista os livros de um autor.
+- `GET /livros/{livro_id}/exemplares` — lista os exemplares de um livro.
+- `GET /emprestimos/vencidos/` e `GET /usuarios/{id_usuario}/situacao` — identificam empréstimos atrasados e calculam a situação do usuário.
+
+### Consultas complexas
+
+- `GET /relatorios/obras-autores-categorias` — relaciona livros, categorias e autores para contar e ordenar as obras por autor e categoria.
+- `GET /relatorios/atrasos-categorias` — relaciona categorias, livros, exemplares e empréstimos para contar os atrasos por categoria.
+
+### Filtros disponíveis
+
+- **Livros:** `titulo`, `id_categoria`, `id_editora` e `ano_publicacao`.
+- **Empréstimos:** `id_usuario`, `id_exemplar` e `situacao_emprestimo`.
 
