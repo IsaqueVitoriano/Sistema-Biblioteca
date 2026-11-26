@@ -2,7 +2,13 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.database import get_session
-from app.schemas.entidades import UsuarioEntrada, UsuarioSaida, HistoricoEmprestimoSaida, RemocaoSaida
+from app.schemas.entidades import (
+    HistoricoEmprestimoSaida,
+    RemocaoSaida,
+    UsuarioAtualizacao,
+    UsuarioEntrada,
+    UsuarioSaida,
+)
 
 from app.crud.usuario import (
     listar_usuarios,
@@ -26,9 +32,11 @@ def obter_usuario_id(id: str, session: Session = Depends(get_session)):
     return obter_usuario(id, session)
 
 
-@router.put("/{id}", response_model=UsuarioSaida)
+@router.patch("/{id}", response_model=UsuarioSaida)
 def atualizar_usuario_id(
-    id: str, usuario_atualizado: UsuarioEntrada, session: Session = Depends(get_session)
+    id: str,
+    usuario_atualizado: UsuarioAtualizacao,
+    session: Session = Depends(get_session),
 ):
     return atualizar_usuario(id, usuario_atualizado, session)
 
