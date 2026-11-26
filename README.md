@@ -41,13 +41,15 @@ $env:DATABASE_URL = "sqlite:///C:/caminho/para/biblioteca.db"
 
 ### Executar migrações
 
-Execute na raiz do projeto:
+Como a URL do Alembic é `sqlite:///./biblioteca.db`, execute as migrações a partir da pasta `alembic`. Assim, elas usam `alembic/biblioteca.db`, o mesmo arquivo padrão da aplicação:
 
 ```powershell
-alembic -c alembic/alembic.ini upgrade head
+Set-Location .\alembic
+alembic upgrade head
+Set-Location ..
 ```
 
-O Alembic usa a URL configurada em `alembic/alembic.ini`, atualmente `sqlite:///./biblioteca.db`. Esse caminho é relativo ao diretório em que o comando é executado e, portanto, não corresponde ao caminho padrão do banco usado pela aplicação (`alembic/biblioteca.db`). As migrações não acompanham automaticamente a variável `DATABASE_URL`.
+Se definir `DATABASE_URL` para apontar a aplicação a outro arquivo, ajuste também a URL em `alembic.ini` antes de executar as migrações. O Alembic não lê essa variável automaticamente.
 
 ### Carregar dados de exemplo
 
