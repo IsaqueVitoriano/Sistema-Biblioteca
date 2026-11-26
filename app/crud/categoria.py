@@ -57,7 +57,7 @@ def categoria_com_atrasos(session: Session):
             .where(Emprestimo.situacao_emprestimo == "ATRASADO")
         )
         .group_by(Categoria.nome)
-        .order_by(func.count(Emprestimo.id).desc())
+        .order_by(func.count(Emprestimo.id).desc(), Categoria.nome)
     )
 
     resultados = session.execute(consulta_complexa).all()
