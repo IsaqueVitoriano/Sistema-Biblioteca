@@ -36,17 +36,18 @@ def gerar_qtd_exemplar_situacao(session: Session):  # count + group by
         .all()
     )
 
-    return {
-        situacao.value: total
-        for situacao, total in registros
-    }
+    return {situacao.value: total for situacao, total in registros}
 
 
 def gerar_tempo_medio_emprestimo(session: Session):  # avg
-    emprestimos = session.query(
-        Emprestimo.data_emprestimo,
-        Emprestimo.data_devolucao_efetiva,
-    ).filter(Emprestimo.data_devolucao_efetiva.isnot(None)).all()
+    emprestimos = (
+        session.query(
+            Emprestimo.data_emprestimo,
+            Emprestimo.data_devolucao_efetiva,
+        )
+        .filter(Emprestimo.data_devolucao_efetiva.isnot(None))
+        .all()
+    )
 
     if not emprestimos:
         return 0
@@ -64,11 +65,13 @@ def gerar_data_primeiro_emprestimo(session: Session):  # min
     ).scalar()
     return valor.date() if valor is not None else None
 
+
 def gerar_data_ultimo_emprestimo(session: Session):  # max
     valor = session.query(
         func.max(Emprestimo.data_emprestimo),
     ).scalar()
     return valor.date() if valor is not None else None
+
 
 def gerar_total_paginas_categoria(session: Session):  # sum
     registros = (

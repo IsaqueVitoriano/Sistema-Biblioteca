@@ -10,15 +10,13 @@ from app.schemas.entidades import ExemplarEntrada, ExemplarSaida, RemocaoSaida
 def criar_exemplares(dados: ExemplarEntrada, session: Session):
     get_or_404(session, Livro, dados.id_livro)
 
-    exemplar = Exemplar(
-        situacao=dados.situacao,
-        id_livro=dados.id_livro
-    )
+    exemplar = Exemplar(situacao=dados.situacao, id_livro=dados.id_livro)
 
     session.add(exemplar)
     commit_or_conflict(session)
     session.refresh(exemplar)
     return exemplar
+
 
 def listar_exemplares(session: Session):
     return session.scalars(select(Exemplar)).all()
@@ -47,6 +45,4 @@ def apagar_exemplar(exemplar_id: str, session: Session):
     session.delete(exemplar)
     commit_or_conflict(session)
 
-    return RemocaoSaida(
-        mensagem="Exemplar apagado com sucesso!", dados=dados_exemplar
-    )
+    return RemocaoSaida(mensagem="Exemplar apagado com sucesso!", dados=dados_exemplar)
