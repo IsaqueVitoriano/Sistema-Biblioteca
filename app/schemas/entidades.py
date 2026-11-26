@@ -7,8 +7,8 @@ class Estatistica(BaseModel):
     qtd_livro_categoria: dict[str, int]
     qtd_exemplar_situacao: dict[str, int]
     tempo_medio_emprestimo: float
-    data_primeiro_emprestimo: date | None
-    data_ultimo_emprestimo: date | None
+    data_primeiro_emprestimo: date
+    data_ultimo_emprestimo: date
     tot_paginas_categoria: dict[str, int]
 
 
@@ -23,7 +23,7 @@ class AutorSaida(BaseModel):
 
 
 class ExemplarEntrada(BaseModel):
-    situacao: SituacaoExemplar
+    situacao: SituacaoExemplar = SituacaoExemplar.DISPONIVEL
     id_livro: str
 
 
@@ -35,7 +35,7 @@ class ExemplarSaida(BaseModel):
 
 
 class EmprestimoEntrada(BaseModel):
-    situacao_emprestimo: SituacaoEmprestimo
+    situacao_emprestimo: SituacaoEmprestimo = SituacaoEmprestimo.PENDENTE
     data_emprestimo: datetime
     data_devolucao_efetiva: datetime | None = None
     data_prazo_devolucao: datetime
@@ -56,6 +56,7 @@ class EmprestimoSaida(BaseModel):
 
 class UsuarioEntrada(BaseModel):
     nome: str = Field(max_length=100)
+    data_criacao: datetime
     email: str = Field(max_length=150)
     matricula: str
     telefone: str = Field(max_length=20)

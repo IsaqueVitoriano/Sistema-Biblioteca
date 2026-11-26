@@ -1,21 +1,24 @@
+from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.utils.util import commit_or_conflict, get_or_404
-from app.models.models import Exemplar, Livro
+from app.models.models import Exemplar, Livro, SituacaoExemplar
 from app.schemas.entidades import ExemplarEntrada, ExemplarSaida, RemocaoSaida
 
 
 def criar_exemplares(dados: ExemplarEntrada, session: Session):
     get_or_404(session, Livro, dados.id_livro)
 
-    exemplar = Exemplar(**dados.model_dump())
+    exemplar = Exemplar(
+        situacao=dados.situacao,
+        id_livro=dados.id_livro
+    )
 
     session.add(exemplar)
     commit_or_conflict(session)
     session.refresh(exemplar)
     return exemplar
-
 
 def listar_exemplares(session: Session):
     return session.scalars(select(Exemplar)).all()

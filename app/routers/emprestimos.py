@@ -1,6 +1,15 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, status
 
-from app.crud.emprestimo import *
+from app.crud.emprestimo import (
+    listar_emprestimos,
+    Session,
+    SituacaoEmprestimo,
+    atualizar_emprestimo,
+    EmprestimoEntrada,
+    criar_emprestimos,
+    obter_emprestimo,
+    apagar_emprestimo,
+)
 from app.database import get_session
 from app.schemas.entidades import EmprestimoSaida, EmprestimoPaginadoSaida, RemocaoSaida
 
@@ -29,20 +38,20 @@ def listar(
 
 
 @router.get("/{id}", response_model=EmprestimoSaida)
-def obter_emprestimo_id(emprestimo_id: str, session: Session = Depends(get_session)):
-    return obter_emprestimo(emprestimo_id, session)
+def obter_emprestimo_id(id: str, session: Session = Depends(get_session)):
+    return obter_emprestimo(id, session)
 
 
 @router.put("/{id}", response_model=EmprestimoSaida)
 def atualizar_emprestimo_id(
     id: str,
-    exemplar_atualizado: EmprestimoEntrada,
+    emprestimo_atualizado: EmprestimoEntrada,
     session: Session = Depends(get_session),
 ):
-    return atualizar_emprestimo(id, exemplar_atualizado, session)
+    return atualizar_emprestimo(id, emprestimo_atualizado, session)
 
 
-@router.post("/", response_model=EmprestimoSaida)
+@router.post("/", response_model=EmprestimoSaida, status_code=status.HTTP_201_CREATED)
 def criar_emprestimo(
     novo_emprestimo: EmprestimoEntrada, session: Session = Depends(get_session)
 ):

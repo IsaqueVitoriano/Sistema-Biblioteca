@@ -12,8 +12,8 @@ def listar(session: Session = Depends(get_session)):
 
 
 @router.get("/{id}", response_model=ExemplarSaida)
-def obter_exemplar_id(exemplar_id: str, session: Session = Depends(get_session)):
-    return obter_exemplar(exemplar_id, session)
+def obter_exemplar_id(id: str, session: Session = Depends(get_session)):
+    return obter_exemplar(id, session)
 
 
 @router.put("/{id}", response_model=ExemplarSaida)
@@ -26,7 +26,7 @@ def atualizar_exemplar_id(
 
 
 @router.post("/", response_model=ExemplarSaida)
-def criar_exemplar(
+def cadastrar_exemplar(
     novo_exemplar: ExemplarEntrada, session: Session = Depends(get_session)
 ):
     return criar_exemplares(novo_exemplar, session)
