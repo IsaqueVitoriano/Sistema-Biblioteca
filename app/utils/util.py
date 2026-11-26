@@ -14,6 +14,7 @@ from app.schemas.entidades import (
 
 ModelType = TypeVar("ModelType", bound=Base)
 
+
 def get_usuario(
     session: Session,
     data: UsuarioEntrada,
@@ -42,16 +43,14 @@ def get_categoria(
     data: CategoriaEntrada,
     exclude_id: str | None = None,
 ) -> None:
-    query = (select(Categoria.id)
-             .where(Categoria.nome == data.nome))
+    query = select(Categoria.id).where(Categoria.nome == data.nome)
 
     if exclude_id is not None:
         query = query.where(Categoria.id != exclude_id)
 
     if session.scalar(query.limit(1)) is not None:
         raise HTTPException(
-            status_code=409,
-            detail="Já existe uma categoria com esse nome"
+            status_code=409, detail="Já existe uma categoria com esse nome"
         )
 
 
