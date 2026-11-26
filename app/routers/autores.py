@@ -5,7 +5,8 @@ from app.crud.autor import (
     obter_autor,
     atualizar_autor,
     apagar_autor,
-    listar_livros_por_autor, criar_autor_crud,
+    listar_livros_por_autor,
+    criar_autor_crud,
 )
 
 from app.database import get_session

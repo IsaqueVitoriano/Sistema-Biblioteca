@@ -3,7 +3,8 @@ from app.crud.categoria import (
     listar_categorias,
     atualizar_categoria,
     obter_categoria,
-    apagar_categoria, criar_categorias,
+    apagar_categoria,
+    criar_categorias,
 )
 from sqlalchemy.orm import Session
 from app.database import get_session
